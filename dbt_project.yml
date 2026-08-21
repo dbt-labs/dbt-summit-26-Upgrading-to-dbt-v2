@@ -32,6 +32,8 @@ vars:
   base_url: "https://api.example.com"  # Used in deprecated var usage
   expected_rows_customers: 1000
   expected_rows_orders: 5000
+  surrogate_key_treat_nulls_as_empty_strings: true
+
 
 # Behavior change flags for modern dbt practices and migration testing
 flags:
