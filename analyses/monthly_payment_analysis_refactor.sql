@@ -3,7 +3,6 @@
 -- Fusion can now introspect the fixed column structure
 
 {{ config(
-    materialized='view',
     tags=['fusion_compatible', 'pivot_explicit', 'monthly_analysis']
 ) }}
 

@@ -5,14 +5,13 @@
     Trainees need to move custom configs to meta and update this macro.
   -#}
   
-  {#- These config.get() calls will return None in Fusion since custom configs must be under 'meta' -#}
-  {% set add_row_number = config.get('add_row_number') %}
-  {% set add_hash_key = config.get('add_hash_key') %}
-  {% set business_unit = config.get('business_unit') %}
-  {% set enable_audit_fields = config.get('enable_audit_fields') %}
-  
-  {#- This will cause a compilation error when business_unit is None -#}
-  {% set business_unit_upper = business_unit.upper() %}
+  {% set model_meta = config.get('meta') or {} %}
+  {% set add_row_number = model_meta.get('add_row_number') %}
+  {% set add_hash_key = model_meta.get('add_hash_key') %}
+  {% set business_unit = model_meta.get('business_unit') %}
+  {% set enable_audit_fields = model_meta.get('enable_audit_fields') %}
+  {% set business_unit_upper = business_unit.upper() if business_unit else none %}
+
   
   {#- Generate additional computed columns based on config -#}
   {% if add_row_number %}

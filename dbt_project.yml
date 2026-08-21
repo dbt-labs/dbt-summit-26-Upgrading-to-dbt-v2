@@ -53,6 +53,7 @@ models:
       +materialized: view
     marts:
       +materialized: table
-      +persist_docs:   # Missing + prefix (dbt Core ignores, Fusion validates)
+      +persist_docs:
+
         relation: true
         columns: true

@@ -1,8 +1,11 @@
 {{
   config(
     materialized='table',
-    restrict_access=true,
-    access_level='protected',
+    meta={
+      'restrict_access': true,
+      'access_level': 'protected'
+    },
+
     description='Financial reporting model with protected access - '
   )
 }}

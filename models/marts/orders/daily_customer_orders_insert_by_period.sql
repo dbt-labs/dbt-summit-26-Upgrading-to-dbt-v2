@@ -3,10 +3,13 @@
 
 {{ config(
     materialized='table',
-    period='day',
-    timestamp_field='ordered_at',
-    start_date='2023-01-01',
-    stop_date='2024-12-31',
+    meta={
+      'period': 'day',
+      'timestamp_field': 'ordered_at',
+      'start_date': '2023-01-01',
+      'stop_date': '2024-12-31'
+    },
+
     tags=['package_breaking_change', 'materialization']
 ) }}
 

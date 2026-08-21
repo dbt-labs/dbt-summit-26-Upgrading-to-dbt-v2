@@ -1,10 +1,13 @@
 {{
   config(
     materialized='table',
-    add_row_number=true,
-    add_hash_key=true,
-    business_unit='ecommerce',
-    enable_audit_fields=true
+    meta={
+      'add_row_number': true,
+      'add_hash_key': true,
+      'business_unit': 'ecommerce',
+      'enable_audit_fields': true
+    }
+
   )
 }}
 
