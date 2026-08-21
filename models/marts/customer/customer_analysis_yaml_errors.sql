@@ -1,6 +1,7 @@
 {{
   config(
-    materialised='table',
+    materialized='table',
+
     description='Model demonstrating common YAML validation errors for Fusion training',
     post_hook="update {{ this }} set processed_at = current_timestamp()",
     tags=['yaml_validation_error', 'fusion_training'],

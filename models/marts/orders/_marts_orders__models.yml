@@ -26,18 +26,11 @@ models:
         description: The number of individual food items ordered.
       - name: count_drink_items
         description: The number of individual drink items ordered.
-      - name: count_items
-        description: The total number of both food and drink items ordered.
-      - name: subtotal_drink_items
-        description: The sum of all the drink item prices without tax.
-      - name: subtotal_food_items
-        description: The sum of all the food item prices without tax.
       - name: subtotal
         description: The sum total of both food and drink item prices without tax.
       - name: order_cost
         description: The sum of supply expenses to fulfill the order.
-      - name: location_name
-        description: The full location name.
+
       - name: is_food_order
         description: A boolean indicating if this order included any food items.
       - name: is_drink_order
