@@ -7,7 +7,7 @@
 
 {{
     config(
-        target_schema = 'snapshots',
+        target_schema = 'dbt_workshop_MTesting_ba1c70',
         unique_key = 'membership_id',
         strategy = 'check',
         check_cols = ['tier', 'guild_id', 'valid_to'],
