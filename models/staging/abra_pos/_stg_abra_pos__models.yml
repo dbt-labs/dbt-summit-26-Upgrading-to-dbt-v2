@@ -25,12 +25,14 @@ models:
         description: "Lowercased order status."
         tests:
           - accepted_values:
-              values: ['completed', 'returned', 'cancelled', 'placed']
+              arguments:
+                values: ['completed', 'returned', 'cancelled', 'placed']
       - name: channel
         description: "Sales channel the order came through."
         tests:
           - accepted_values:
-              values: ['in_store', 'courier_owl', 'marketplace']
+              arguments:
+                values: ['in_store', 'courier_owl', 'marketplace']
 
   - name: stg_abra_pos__order_items
     description: "One row per potion per order. A SKU never repeats within an order."
@@ -45,8 +47,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_abra_pos__orders')
-              field: order_id
+              arguments:
+                to: ref('stg_abra_pos__orders')
+                field: order_id
       - name: potion_sku
         description: "Foreign key to stg_abra_pos__potions."
         tests:
@@ -72,12 +75,14 @@ models:
         description: "How the customer paid."
         tests:
           - accepted_values:
-              values: ['coin', 'guild_credit', 'crystal_transfer', 'barter']
+              arguments:
+                values: ['coin', 'guild_credit', 'crystal_transfer', 'barter']
       - name: payment_status
         description: "Outcome of the payment attempt."
         tests:
           - accepted_values:
-              values: ['success', 'failed', 'refunded']
+              arguments:
+                values: ['success', 'failed', 'refunded']
 
   - name: stg_abra_pos__potions
     description: "One row per potion in the catalogue."

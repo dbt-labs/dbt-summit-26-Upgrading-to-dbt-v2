@@ -3,8 +3,6 @@ version: 2
 models:
   - name: fct_orders
     description: "One row per order, with basket metrics and payment outcomes attached."
-    docs:
-      show: true
     columns:
       - name: order_id
         description: "Primary key."
@@ -22,6 +20,9 @@ models:
       - name: failed_payment_count
         description: "How many payment attempts on this order failed."
 
+    config:
+      docs:
+        show: true
   - name: fct_order_items
     description: "One row per potion per order, widened with order and potion attributes."
     columns:
@@ -51,7 +52,8 @@ models:
         description: "Lifetime-spend banding used by the loyalty program."
         tests:
           - accepted_values:
-              values: ['archmage', 'adept', 'apprentice', 'prospect']
+              arguments:
+                values: ['archmage', 'adept', 'apprentice', 'prospect']
       - name: guild_tier
         description: "Current guild tier, null when the customer holds no membership."
 
@@ -87,6 +89,9 @@ models:
     columns:
       - name: payment_id
         description: "Source primary key."
+        tests:
+          - unique
+          - not_null
       - name: paid_at
         description: "Payment timestamp. Drives the incremental window."
 
