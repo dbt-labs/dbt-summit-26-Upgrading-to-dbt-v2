@@ -10,8 +10,6 @@ macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 test-paths: ["tests"]
 analysis-paths: ["analyses"]
-
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
@@ -26,13 +24,13 @@ vars:
 
 models:
   merlinco_apothecaries:
+    +static_analysis: strict
     +materialized: view
     staging:
       +materialized: view
     intermediate:
       +materialized: ephemeral
     marts:
-      materialized: table
       +tags: ['core_lab']
       compliance:
         +materialized: audit_table
@@ -42,6 +40,7 @@ models:
         # is in the nightly job, so the SQL has not been exercised in months.
         +enabled: "{{ var('include_quarantined', false) }}"
         +tags: ['quarantined']
+      +materialized: table
 
 seeds:
   merlinco_apothecaries:
@@ -53,3 +52,5 @@ seeds:
       +tags: ['pos']
     alembic_ops:
       +tags: ['ops']
+flags:
+  require_generic_test_arguments_property: true

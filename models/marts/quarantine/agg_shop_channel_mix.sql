@@ -12,11 +12,14 @@ select
     shop_id,
     shop_region,
     channel,
-    count(distinct order_id) as order_count,
+    count(distinct orders.order_id) as order_count,
     sum(gross_amount_gold) as gross_revenue_gold
 
 from {{ ref('int_orders_enriched') }} as orders
 left join {{ ref('int_order_item_totals') }} as item_totals
     on orders.order_id = item_totals.order_id
 
-group by shop_id, shop_region
+group by
+    orders.shop_id,
+    orders.shop_region,
+    orders.channel

@@ -3,8 +3,9 @@ version: 2
 models:
   - name: fct_orders
     description: "One row per order, with basket metrics and payment outcomes attached."
-    docs:
-      show: true
+    config:
+      docs:
+        show: true
     columns:
       - name: order_id
         description: "Primary key."
@@ -51,7 +52,8 @@ models:
         description: "Lifetime-spend banding used by the loyalty program."
         tests:
           - accepted_values:
-              values: ['archmage', 'adept', 'apprentice', 'prospect']
+              arguments:
+                values: ['archmage', 'adept', 'apprentice', 'prospect']
       - name: guild_tier
         description: "Current guild tier, null when the customer holds no membership."
 

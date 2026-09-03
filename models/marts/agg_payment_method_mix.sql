@@ -1,6 +1,7 @@
 {{
     config(
-        materialized = 'table'
+        materialized = 'table',
+        static_analysis = 'off'
     )
 }}
 

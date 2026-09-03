@@ -9,7 +9,7 @@
 
 select
     brew_id,
-    potion_sku,
+    brew_events.potion_sku as potion_sku,
     shop_id,
     cauldron_id,
     brewed_at,

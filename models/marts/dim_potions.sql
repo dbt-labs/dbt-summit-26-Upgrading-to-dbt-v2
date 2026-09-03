@@ -5,7 +5,7 @@
 
 {{
     config(
-        materialised = 'view'
+        materialized='view'
     )
 }}
 
