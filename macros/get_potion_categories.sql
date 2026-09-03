@@ -1,36 +1,17 @@
 {#
-  Builds one pivoted revenue column per potion category so the marts layer does
-  not have to be edited every time merchandising adds a category.
+  Returns the potion categories the marts layer pivots on.
 
-  The category list is read straight out of the warehouse at compile time. Two
-  guards are needed for that to be safe:
-    * `execute` -- during parsing there is no connection at all.
-    * `load_relation` -- on a cold start the staging table does not exist yet,
-      so fall back to the categories we know shipped with the catalogue.
+  This used to discover the list by running a query against the warehouse at
+  compile time. That worked, but it made compilation depend on warehouse state:
+  the model could not be compiled without a live connection, it needed a
+  `load_relation` fallback to survive a cold start, and an ahead-of-time compile
+  with introspection disabled failed outright (dbt1307).
+
+  The list is declared in the `potion_categories` project var instead. It is the
+  same six values, and the accepted_values test on stg_abra_pos__potions.category
+  is what keeps this honest -- if merchandising adds a category, that test fails
+  and points here.
 #}
 {% macro get_potion_categories() %}
-
-    {% set fallback_categories = ['clarity', 'healing', 'invisibility', 'love', 'luck', 'strength'] %}
-
-    {% if not execute %}
-        {{ return([]) }}
-    {% endif %}
-
-    {% set potions_relation = ref('stg_abra_pos__potions') %}
-
-    {% if load_relation(potions_relation) is none %}
-        {{ return(fallback_categories) }}
-    {% endif %}
-
-    {% set category_query %}
-        select distinct lower(trim(category)) as category
-        from {{ potions_relation }}
-        order by 1
-    {% endset %}
-
-    {% set results = run_query(category_query) %}
-    {% set categories = results.columns[0].values() %}
-
-    {{ return(categories if categories | length > 0 else fallback_categories) }}
-
+    {{ return(var('potion_categories')) }}
 {% endmacro %}

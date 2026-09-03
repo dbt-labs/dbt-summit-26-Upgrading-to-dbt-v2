@@ -22,6 +22,16 @@ vars:
   # Quarantined models are back in the graph as of 2026-09-02, now that Core v2
   # static analysis identified why each one was broken.
   include_quarantined: true
+  # Categories the marts layer pivots on. Declared rather than discovered, so
+  # the project compiles without a warehouse connection. Kept honest by the
+  # accepted_values test on stg_abra_pos__potions.category.
+  potion_categories:
+    - clarity
+    - healing
+    - invisibility
+    - love
+    - luck
+    - strength
 
 models:
   merlinco_apothecaries:

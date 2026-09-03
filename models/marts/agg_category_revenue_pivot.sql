@@ -8,16 +8,11 @@
   One revenue column per potion category, pivoted so the merchandising dashboard
   can read it without a crosstab step.
 
-  The category list is discovered from the warehouse at compile time by
-  get_potion_categories(), so merchandising can add a category without anybody
-  editing this model.
+  The category list comes from get_potion_categories(), which reads the
+  declared `potion_categories` project var. It no longer queries the warehouse
+  at compile time, so this model needs neither a live connection nor the
+  `depends_on` hint it used to carry.
 #}
-
-{#
-  get_potion_categories() reaches for stg_abra_pos__potions inside a conditional,
-  so dbt cannot infer the edge on its own. Declare it explicitly.
-#}
--- depends_on: {{ ref('stg_abra_pos__potions') }}
 
 {% set categories = get_potion_categories() %}
 
