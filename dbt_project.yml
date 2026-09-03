@@ -28,12 +28,7 @@ models:
   merlinco_apothecaries:
     +materialized: view
     staging:
-      grimoire_crm:
-        +schema: staging
-      abra_pos:
-        +schema: staging
-      alembic_ops:
-        +schema: staging
+      +materialized: view
     intermediate:
       +materialized: ephemeral
     marts:
@@ -50,6 +45,7 @@ models:
 
 seeds:
   merlinco_apothecaries:
+    +database: dbt_learn
     +schema: raw
     grimoire_crm:
       +tags: ['crm']
@@ -57,7 +53,3 @@ seeds:
       +tags: ['pos']
     alembic_ops:
       +tags: ['ops']
-
-snapshots:
-  merlinco_apothecaries:
-    +target_schema: snapshots
