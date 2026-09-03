@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "One row per order, with basket metrics and payment outcomes attached."
+    docs:
+      show: true
+    columns:
+      - name: order_id
+        description: "Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Foreign key to dim_customers."
+        tests:
+          - not_null
+      - name: net_amount_gold
+        description: "Gross basket value less order-level discount, in gold crowns."
+      - name: collected_gold
+        description: "Sum of successful payments, in gold crowns."
+      - name: failed_payment_count
+        description: "How many payment attempts on this order failed."
+
+  - name: fct_order_items
+    description: "One row per potion per order, widened with order and potion attributes."
+    columns:
+      - name: order_item_id
+        description: "Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Foreign key to fct_orders."
+        tests:
+          - not_null
+      - name: potion_sku
+        description: "Foreign key to dim_potions."
+        tests:
+          - not_null
+
+  - name: dim_customers
+    description: "One row per customer, with guild standing and lifetime order activity."
+    columns:
+      - name: customer_id
+        description: "Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: value_segment
+        description: "Lifetime-spend banding used by the loyalty program."
+        tests:
+          - accepted_values:
+              values: ['archmage', 'adept', 'apprentice', 'prospect']
+      - name: guild_tier
+        description: "Current guild tier, null when the customer holds no membership."
+
+  - name: dim_potions
+    description: "One row per potion, with recipe cost, unit margin and brew quality stats."
+    columns:
+      - name: potion_sku
+        description: "Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: unit_margin_pct
+        description: "Unit margin as a fraction of base price."
+      - name: brew_failure_rate
+        description: "Share of brew events for this potion that failed QC."
+
+  - name: fct_orders_backfill
+    description: >
+      Reprocessing variant of fct_orders. Materialization follows the
+      PIPELINE_RUN_MODE var: a table under the default "standard" mode, ephemeral
+      during a backfill.
+    columns:
+      - name: order_id
+        description: "Order identifier. Not unique-tested here because backfill runs can overlap."
+      - name: pipeline_run_mode
+        description: "{{ doc('pipeline_run_mode') }}"
+
+  - name: fct_payment_events
+    description: >
+      Payment attempts, built incrementally. The reload window deliberately
+      re-reads the boundary period, because a payment can land with a paid_at
+      slightly behind the previous high-water mark.
+    columns:
+      - name: payment_id
+        description: "Source primary key."
+      - name: paid_at
+        description: "Payment timestamp. Drives the incremental window."
+
+  - name: agg_revenue_by_region
+    description: "Region-by-month revenue rollup, normalized per shop."
+    columns:
+      - name: shop_region
+        description: "Canonical shop region."
+        tests:
+          - not_null
+      - name: order_month
+        description: "Month the orders were placed, truncated."
+      - name: gross_revenue_gold_per_shop
+        description: "Gross revenue divided by the number of shops in the region."
+
+  - name: agg_category_revenue_pivot
+    description: >
+      Revenue pivoted to one column per potion category. The column list is
+      discovered from the warehouse at compile time.
+    columns:
+      - name: shop_region
+        description: "Canonical shop region."
+      - name: revenue_total_gold
+        description: "Total revenue across all categories, in gold crowns."
+
+snapshots:
+  - name: guild_memberships_snapshot
+    description: "Check-strategy snapshot tracking guild tier changes over time."
+    columns:
+      - name: membership_id
+        description: "Source primary key. Not unique in the snapshot -- one row per version."

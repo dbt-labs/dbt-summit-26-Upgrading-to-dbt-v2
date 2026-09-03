@@ -1,20 +1,35 @@
-# ⚡ dbt Fusion Upgrade Training
+# ⚡ Upgrading to dbt Core v2
 
-Welcome to the **Coalesce 2025 dbt Fusion Upgrade Training**! This training repository provides hands-on experience upgrading from **dbt Core to dbt Fusion**. Below you'll find useful links and information to following along in your own sandbox.
+Welcome to the **Summit 2026 Upgrading to dbt v2 Training**! This training repository provides hands-on experience upgrading from **dbt Core <v2.0 to dbt v2+**. Below you'll find useful links and information to following along in your own sandbox.
 
 ## Workshop Account Setup
 
 Use this link: [https://workshops.us1.dbt.com/workshop](https://workshops.us1.dbt.com/workshop)
 <br>
-Find the course by name: Upgrading to Fusion
+Find the course by name: Upgrading to dbt v2
 <br>
-Passcode `Coalesce2025!`
+Passcode `Summit2026!`
+
+## The lab
+
+Work through the modules in order. Each one maps to a gate in the upgrade flow:
+
+| Module | Gate |
+|---|---|
+| [0 — Setup and context](lab/00-setup.md) | — |
+| [1 — Parse and deprecations](lab/01-parse-and-deprecations.md) | `dbt parse` |
+| [1b — Macro argument types](lab/01b-macro-argument-types.md) | `dbt parse` warnings |
+| [1c — Silently ignored config](lab/01c-silently-ignored-config.md) | `dbt parse` |
+| [2 — Compile with analysis off](lab/02-compile-static-analysis-off.md) | `--static-analysis off` |
+| [3 — Baseline and strict](lab/03-baseline-and-strict.md) | `baseline` / `strict` |
+| [3b — Dynamic SQL and introspection](lab/03b-dynamic-sql-and-introspection.md) | `strict`, `--no-introspect` |
+| [4 — Run, build, and state](lab/04-run-build-and-state.md) | `dbt build`, `state:` |
+| [5 — Deferral and rollout](lab/05-deferral-and-rollout.md) | manifests, deferral |
 
 ## Helpful Links
 
-- Google Slides: [https://docs.google.com/presentation/d/19SHxMd5H2_OF4MqJgyCIv96MrxGpXpGu_DPtpRYAwhg/edit?usp=sharing](https://docs.google.com/presentation/d/19SHxMd5H2_OF4MqJgyCIv96MrxGpXpGu_DPtpRYAwhg/edit?usp=sharing)
-- Demo Repository: [https://github.com/dbt-labs/Coalesce-2025-Upgrading-to-Fusion](https://github.com/dbt-labs/Coalesce-2025-Upgrading-to-Fusion)
-- [Clone Environment Setup](https://share.1password.com/s#0qp-sDi8LWrwr6TwWojHl3J2-e_1tQPj0BPWlQswQQs)
+- Google Slides: [https://docs.google.com/presentation/d/1mGREYqR_SCkWQh6vfjtmjAtRP8xdt83Ky6dHBw2Fu44/edit?usp=sharing](https://docs.google.com/presentation/d/1mGREYqR_SCkWQh6vfjtmjAtRP8xdt83Ky6dHBw2Fu44/edit?usp=sharing)
+- Demo Repository: [https://github.com/dbt-labs/dbt-summit-26-Upgrading-to-dbt-v2](https://github.com/dbt-labs/dbt-summit-26-Upgrading-to-dbt-v2)
 
 ## Getting your project compiling
 
@@ -28,4 +43,4 @@ You'll have access to the workshop account for 7 days if you need to go back and
 
 ## Survey
 
-Please use [this link](https://dbtlearn.typeform.com/coalesce-2025) to give feedback on the training!
+Please use [this link](https://tinyurl.com/dbt-summit-survey) to give feedback on the training!
