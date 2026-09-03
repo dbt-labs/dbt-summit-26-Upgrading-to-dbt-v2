@@ -7,11 +7,13 @@
   paid_at slightly behind the previous high-water mark.
 #}
 
-{{ config(
-    materialized='incremental', 
-    incremental_strategy='merge', 
-    meta={'unique_keys': 'payment_id'}
-) }}
+{{
+    config(
+        materialized = 'incremental',
+        unique_key = 'payment_id',
+        incremental_strategy = 'merge'
+    )
+}}
 
 select
     payment_id,

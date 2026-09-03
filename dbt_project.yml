@@ -10,8 +10,6 @@ macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 test-paths: ["tests"]
 analysis-paths: ["analyses"]
-
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
@@ -37,7 +35,7 @@ models:
     intermediate:
       +materialized: ephemeral
     marts:
-      materialized: table
+      +materialized: table
       +tags: ['core_lab']
       compliance:
         +materialized: audit_table
@@ -61,3 +59,8 @@ seeds:
 snapshots:
   merlinco_apothecaries:
     +target_schema: snapshots
+
+flags:
+  # Set by dbt-autofix: parse values under a test's `arguments` property as the
+  # test's keyword arguments.
+  require_generic_test_arguments_property: true
