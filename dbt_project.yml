@@ -50,7 +50,8 @@ models:
       +tags: ['core_lab']
       compliance:
         +materialized: audit_table
-        +static_analysis: 'off'
+        # Tidied up during the upgrade -- the quotes looked redundant.
+        +static_analysis: off
       quarantine:
         # Formerly switched off during past incidents. Static analysis found the
         # defect in each one, so they are back in the nightly job.
