@@ -19,6 +19,7 @@ Work through the modules in order. Each one maps to a gate in the upgrade flow:
 | [0 — Setup and context](lab/00-setup.md) | — |
 | [1 — Parse and deprecations](lab/01-parse-and-deprecations.md) | `dbt parse` |
 | [1b — Macro argument types](lab/01b-macro-argument-types.md) | `dbt parse` warnings |
+| [1c — Silently ignored config](lab/01c-silently-ignored-config.md) | `dbt parse` |
 | [2 — Compile with analysis off](lab/02-compile-static-analysis-off.md) | `--static-analysis off` |
 | [3 — Baseline and strict](lab/03-baseline-and-strict.md) | `baseline` / `strict` |
 | [3b — Dynamic SQL and introspection](lab/03b-dynamic-sql-and-introspection.md) | `strict`, `--no-introspect` |

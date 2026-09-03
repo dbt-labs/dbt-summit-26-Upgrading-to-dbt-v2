@@ -32,10 +32,10 @@ dbt parse
 ```
 
 ```
-Finished 'parse' with 19 warnings and 13 errors for target 'dev'
+Finished 'parse' with 19 warnings and 14 errors for target 'dev'
 ```
 
-The same project. Thirteen errors, and it will not proceed.
+The same project. Fourteen errors, and it will not proceed.
 
 Read the errors — they fall into three groups:
 
@@ -54,6 +54,19 @@ Read the errors — they fall into three groups:
   'arguments' field.
   --> models/staging/abra_pos/_stg_abra_pos__models.yml:33:23
 ```
+
+Plus two more of the `dbt1060` kind, which are **not** deprecations — they are
+misspelled config keys that dbt Core has been silently discarding:
+
+```
+[error] [UnusedConfigKey (dbt1060)]: Ignored unexpected key `"materialised"`.
+[error] [UnusedConfigKey (dbt1060)]: Ignored unexpected key `"unique_keys"`.
+```
+
+Those two have consequences well beyond a parse error, and Autofix handles them
+badly. They get their own module —
+**[1c — Silently ignored config](01c-silently-ignored-config.md)** — which you
+should do before running Autofix here.
 
 !!! note "Why `materialized` without a `+` is an error, not a typo"
     In `dbt_project.yml`, config keys take a `+` prefix. Without it, the key is
@@ -75,6 +88,12 @@ Read the dry run before applying it. It proposes seven changesets:
 - deprecated `target-path` removed
 - `flags.require_generic_test_arguments_property` set to `true`
 
+!!! danger "Read every line of the dry run"
+    Two of the changesets say `Moved custom config [...] to 'meta'`. That is
+    Autofix telling you it does not recognise a key and is relocating it
+    somewhere legal — which silences the error and **keeps the bug**. See
+    [Module 1c](01c-silently-ignored-config.md) before you apply anything.
+
 Then apply it:
 
 ```bash
@@ -83,10 +102,10 @@ dbt parse
 ```
 
 ```
-Finished 'parse' with 4 warnings for target 'dev'
+Finished 'parse' with 19 warnings for target 'dev'
 ```
 
-Thirteen errors down to zero. Four warnings remain.
+Fourteen errors down to zero. Nineteen warnings remain.
 
 ## Finish the job by hand
 
@@ -120,7 +139,7 @@ builds on the engine that is currently serving production:
 
 ```bash
 dbt build      # dbt Core
-Done. PASS=93 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=93
+Done. PASS=94 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=94
 ```
 
 Green, and dbt Core no longer reports deprecations either. Both engines are now
@@ -132,12 +151,17 @@ happy with the same code — which is what makes a staged rollout possible.
     habit it should leave you with is the right one: read the `--dry-run`, and
     re-run your dbt Core build after applying changes.
 
+    [Module 1c](01c-silently-ignored-config.md) shows the everyday version of
+    this, where Autofix turns the gate green and leaves data corruption running.
+
 ## Takeaways
 
 - dbt Core's deprecation warnings are dbt Core v2's parse errors. Clearing them
   is not optional cleanup — it is the first gate.
 - Autofix handles the mechanical majority. It does not touch warnings — see
   [Module 1b](01b-macro-argument-types.md) for the nineteen it leaves behind.
+- Autofix can also make a finding *disappear* without fixing it. See
+  [Module 1c](01c-silently-ignored-config.md).
 - `--dry-run` first, and re-verify on dbt Core afterwards.
 
 **Solution branch:** `solution/01-deprecations`

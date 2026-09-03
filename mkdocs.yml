@@ -56,6 +56,7 @@ nav:
       - 0 - Setup and context: lab/00-setup.md
       - 1 - Parse and deprecations: lab/01-parse-and-deprecations.md
       - 1b - Macro argument types: lab/01b-macro-argument-types.md
+      - 1c - Silently ignored config: lab/01c-silently-ignored-config.md
       - 2 - Compile with analysis off: lab/02-compile-static-analysis-off.md
       - 3 - Baseline and strict: lab/03-baseline-and-strict.md
       - 3b - Dynamic SQL and introspection: lab/03b-dynamic-sql-and-introspection.md

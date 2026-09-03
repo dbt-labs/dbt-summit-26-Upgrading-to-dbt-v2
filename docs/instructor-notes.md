@@ -15,6 +15,8 @@ Everything in this lab was verified against a live Snowflake warehouse on
 | `marts.materialized` missing `+` | silent | **error** | — | — | — | — | — |
 | Model-level `docs:` key | silent | **error** | — | — | — | — | — |
 | Macro warehouse-type annotations (19) | silent | **warning** ×19 | — | — | — | — | — |
+| `materialised` typo (model builds as table) | silent, `PASS` | **dbt1060** | — | — | — | — | — |
+| `unique_keys` typo (incremental appends dupes) | silent, `PASS` | **dbt1060** | — | — | — | — | — |
 | Column typo (`contract_start_date`) | run-time DB error | clean | clean | clean | **dbt0227** | — | — |
 | Ambiguous `potion_sku` | run-time DB error | clean | clean | clean | **dbt0227** | — | — |
 | Ambiguous `order_id` in `count()` | run-time DB error | clean | clean | clean | **dbt0209** | — | — |
@@ -27,8 +29,8 @@ Everything in this lab was verified against a live Snowflake warehouse on
 
 ### Exact counts
 
-Starting state (`main`): v2 parse reports **13 errors and 19 warnings**; dbt
-Core builds `PASS=93 ERROR=0` with 11 deprecation warnings.
+Starting state (`main`): v2 parse reports **14 errors and 19 warnings**; dbt
+Core builds `PASS=94 ERROR=0` with 11 deprecation warnings.
 
 After Module 1 (`solution/01-deprecations`), v2 parse is clean and:
 
@@ -94,11 +96,43 @@ errors without it.
 
 **A custom top-level key in `dbt_project.yml`** is a hard error in dbt Core
 1.10.23, not a deprecation, so it cannot ship in a Core-green project. Autofix
-still demonstrates the `+meta` guidance via the `materialized` prefix finding.
+still demonstrates the `+meta` guidance via the `materialized` prefix finding,
+and Module 1c shows the same `+meta` behavior doing real damage.
 
 ## Framing the headline
 
-The most valuable slide in this deck is the Module 3 table:
+If you only have time to land one thing, land Module 1c.
+
+```
+dim_potions declares:  materialised = 'view'
+dbt Core says:         "Finished running 1 table model"   PASS
+the warehouse says:    DIM_POTIONS  |  BASE TABLE
+
+fct_payment_events declares:  unique_keys = 'payment_id'
+  full refresh      17156 rows | 17156 distinct | 0 duplicates
+  incremental run   17157 rows | 17156 distinct | 1 duplicate     PASS
+  incremental run   17158 rows | 17156 distinct | 2 duplicates    PASS
+
+dbt-autofix --dry-run says:
+  Moved custom config ['materialised'] to 'meta'
+  Moved custom config ['unique_keys'] to 'meta'
+
+after applying autofix:
+  dbt parse         0 errors                                       GREEN
+  incremental run   17157 rows | 17156 distinct | 1 duplicate      STILL BROKEN
+```
+
+Two beats. Core v2 catches at parse a class of bug dbt Core discards in silence
+and reports as PASS. And **Autofix will make that finding disappear without
+fixing it** — because it cannot tell a typo from a deliberate custom key, so it
+relocates it to `meta`, where it now looks intentional.
+
+Trainees who pipe Autofix straight into a commit will ship the corruption with a
+green gate. That is the habit this module exists to break: `--dry-run` is not
+optional, and any line reading "moved custom config X to meta" is a question,
+not a fix.
+
+The second most valuable slide is the Module 3 table:
 
 ```
 same code, include_quarantined: true
@@ -135,6 +169,7 @@ dynamic-SQL patterns, two different gates, neither one caught by baseline:
 | 1 — Parse and deprecations | 30 min | Autofix dry-run, apply, manual fix |
 | 2 — Compile with analysis off | 15 min | Short; read compiled SQL |
 | 1b — Macro argument types | 20 min | The blanket-sed trap is the point |
+| 1c — Silently ignored config | 30 min | Highest-value module in the lab |
 | 3 — Baseline and strict | 40 min | The core of the lab |
 | 3b — Dynamic SQL and introspection | 30 min | Two gates; do both fixtures |
 | 4 — Run, build, and state | 30 min | Seed state trap needs care |
@@ -148,7 +183,7 @@ full `dbt build` before Module 1 so warehouse time is not on the clock.
 Snapshot of a clean starting state:
 
 ```bash
-dbt build          # dbt Core -> PASS=93 WARN=0 ERROR=0 TOTAL=93
+dbt build          # dbt Core -> PASS=94 WARN=0 ERROR=0 TOTAL=94
 ```
 
 If someone falls behind, they can jump to the relevant branch:
@@ -156,7 +191,7 @@ If someone falls behind, they can jump to the relevant branch:
 | Branch | State |
 |---|---|
 | `main` | Core-green start |
-| `solution/01-deprecations` | v2 parse clean, 19 annotations fixed, Core PASS=93 |
+| `solution/01-deprecations` | v2 parse clean; deprecations, 19 annotations and 2 config typos fixed |
 | `solution/03-baseline-strict` | column findings fixed, quarantine re-enabled |
 | `solution/03b-dynamic-sql` | strict 99/99 and clean under `--no-introspect` |
 | `exercise/05-broken-deferral` | the deferral trap, pre-applied |

@@ -8,7 +8,7 @@ runs green on dbt Core before you touch anything:
 
 ```
 dbt build
-Done. PASS=93 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=93
+Done. PASS=94 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=94
 ```
 
 That matters. You are not starting from a broken repo — you are starting from a
@@ -22,6 +22,7 @@ it through the upgrade gate by gate, the same way the upgrade assistant does.
 | [0 — Setup and context](docs/lab/00-setup.md) | — | — |
 | [1 — Parse and deprecations](docs/lab/01-parse-and-deprecations.md) | `dbt parse` | yes |
 | [1b — Macro argument types](docs/lab/01b-macro-argument-types.md) | `dbt parse` warnings | yes |
+| [1c — Silently ignored config](docs/lab/01c-silently-ignored-config.md) | `dbt parse` | yes |
 | [2 — Compile with analysis off](docs/lab/02-compile-static-analysis-off.md) | `--static-analysis off` | no |
 | [3 — Baseline and strict](docs/lab/03-baseline-and-strict.md) | `baseline` / `strict` | yes |
 | [3b — Dynamic SQL and introspection](docs/lab/03b-dynamic-sql-and-introspection.md) | `strict`, `--no-introspect` | yes |
@@ -37,10 +38,16 @@ do **not** reproduce on the current build.
 Every fixture in this project passes on dbt Core. Each one surfaces at exactly
 one gate:
 
-- **Parse** — 13 errors from deprecated YAML and config shapes that dbt Core
+- **Parse** — 14 errors from deprecated YAML and config shapes that dbt Core
   only warns about, plus **19** macro type-annotation warnings Autofix will not
   touch. Matching a real ticket, they span four warehouse types, so the obvious
   blanket replace clears only 14 of them.
+- **Silently dropped config** — a `materialised` typo that makes a model
+  materialize as a table when the code says view, and a `unique_keys` typo that
+  costs an incremental model its merge key and appends one duplicate row per
+  night. dbt Core discards both keys without a word and reports `PASS`. Autofix
+  "fixes" them by moving them to `meta`, which turns the gate green and leaves
+  the corruption running.
 - **Strict** — three quarantined models carrying a column typo, two ambiguous
   column references, and a missing `group by` column. dbt Core's `compile` says
   nothing about any of them; `dbt run` finds them only by asking Snowflake.
@@ -75,7 +82,7 @@ cp profiles.yml.example profiles.yml     # then fill in your connection
 
 dbt deps
 dbt seed        # ~90s on dbt Core
-dbt build       # expect PASS=93 ERROR=0
+dbt build       # expect PASS=94 ERROR=0
 ```
 
 Then open [Module 0](docs/lab/00-setup.md).

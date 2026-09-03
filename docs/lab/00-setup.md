@@ -7,7 +7,7 @@ potion retailer. It runs green on dbt Core today:
 
 ```
 dbt build
-Done. PASS=93 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=93
+Done. PASS=94 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=94
 ```
 
 That is the whole point. You are not starting from a broken repo — you are
@@ -22,7 +22,7 @@ previously called Fusion).
 | Seeds | 12 | Three source systems, roughly 100k rows total |
 | Staging | 12 | One per source table, doing the conforming work |
 | Intermediate | 3 | Ephemeral |
-| Marts | 9 | Facts, dimensions, aggregates, one compliance table |
+| Marts | 10 | Facts, dimensions, aggregates, one incremental, one compliance table |
 | Snapshot | 1 | Check strategy on guild memberships |
 | Tests | 59 | Including one `dbt_utils` composite-key test |
 
@@ -90,7 +90,7 @@ when you actually run them against Snowflake.
 | Branch | Contents |
 |---|---|
 | `main` | Core-green starting state. Begin here. |
-| `solution/01-deprecations` | Parse gate cleared, all 19 annotations fixed |
+| `solution/01-deprecations` | Parse gate cleared: deprecations, 19 annotations, 2 config typos |
 | `solution/03-baseline-strict` | Column-level findings fixed |
 | `solution/03b-dynamic-sql` | Dynamic SQL and introspection removed |
 | `exercise/05-broken-deferral` | The deferral trap, pre-applied |
