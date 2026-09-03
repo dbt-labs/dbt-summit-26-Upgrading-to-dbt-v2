@@ -51,17 +51,26 @@ existence check, and it needs an explicit `-- depends_on:` hint because the
 `ref` is inside a conditional. dbt Core v2 runs it and renders it without
 complaint.
 
-!!! note "On introspective macros"
-    Guidance you may have read warns that `run_query`/`execute` introspection
-    gets flagged as unsafe. In this project, on `dbt-fusion 2.0.0-preview.218`,
-    it is not flagged in any of the three modes — the macro executes and
-    compiles cleanly.
+!!! note "`off` does not excuse everything"
+    Static analysis has no objection to this macro in any of the three modes —
+    it runs the query, gets real values, and renders ordinary SQL.
 
-    That does not make the pattern good. It makes your compiled SQL depend on
-    warehouse state at compile time, which is why this model needs both guards
-    and the `depends_on` hint to survive a cold start. Treat it as technical
-    debt you now have a reason to pay down, not as a blocker you have to fix
-    before upgrading.
+    But introspection is gated separately from static analysis, and that gate
+    catches it even here in `off` mode:
+
+    ```bash
+    dbt compile --static-analysis off --no-introspect --select agg_category_revenue_pivot
+    ```
+
+    ```
+    [error] [DbUnsupportedFeature (dbt1307)]: Not Supported: Introspective
+      queries are disabled (--no-introspect).
+      --> macros/get_potion_categories.sql:21:11
+    ```
+
+    So `off` is Core parity for everything *except* introspection. That is
+    covered properly in
+    [Module 3b](03b-dynamic-sql-and-introspection.md).
 
 ## Takeaways
 
@@ -70,3 +79,4 @@ complaint.
   next gate's findings are all one kind of thing.
 - Diff the compiled SQL against dbt Core's if you want reassurance before moving
   on.
+- `off` is not a blanket amnesty: introspective queries fail even here.

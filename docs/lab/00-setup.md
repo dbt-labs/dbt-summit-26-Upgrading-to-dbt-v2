@@ -7,7 +7,7 @@ potion retailer. It runs green on dbt Core today:
 
 ```
 dbt build
-Done. PASS=92 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=92
+Done. PASS=93 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=93
 ```
 
 That is the whole point. You are not starting from a broken repo — you are
@@ -22,7 +22,7 @@ previously called Fusion).
 | Seeds | 12 | Three source systems, roughly 100k rows total |
 | Staging | 12 | One per source table, doing the conforming work |
 | Intermediate | 3 | Ephemeral |
-| Marts | 8 | Facts, dimensions, aggregates, one compliance table |
+| Marts | 9 | Facts, dimensions, aggregates, one compliance table |
 | Snapshot | 1 | Check strategy on guild memberships |
 | Tests | 59 | Including one `dbt_utils` composite-key test |
 
@@ -62,8 +62,11 @@ Then run/build, then deferral and rollout.
 !!! important "Baseline and strict are not the same check at a lower volume"
     Baseline does not download remote source schemas, so it **cannot see
     column-level problems at all**. In Module 3 you will watch baseline report a
-    clean project and strict report three real errors in the same code. Reaching
+    clean project and strict report four real errors in the same code. Reaching
     baseline is not the same as being correct — it means you are not blocked.
+
+    There is also a fourth gate that is not a static-analysis mode at all:
+    introspection. Module 3b covers it.
 
 ## Ahead-of-time vs just-in-time
 
@@ -87,8 +90,9 @@ when you actually run them against Snowflake.
 | Branch | Contents |
 |---|---|
 | `main` | Core-green starting state. Begin here. |
-| `solution/01-deprecations` | Parse gate cleared |
-| `solution/03-baseline-strict` | Static-analysis findings fixed |
+| `solution/01-deprecations` | Parse gate cleared, all 19 annotations fixed |
+| `solution/03-baseline-strict` | Column-level findings fixed |
+| `solution/03b-dynamic-sql` | Dynamic SQL and introspection removed |
 | `exercise/05-broken-deferral` | The deferral trap, pre-applied |
 
 Modules 2 and 4 involve no code changes — they are command-line exploration, so

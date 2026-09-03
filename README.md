@@ -8,7 +8,7 @@ runs green on dbt Core before you touch anything:
 
 ```
 dbt build
-Done. PASS=92 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=92
+Done. PASS=93 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=93
 ```
 
 That matters. You are not starting from a broken repo — you are starting from a
@@ -21,8 +21,10 @@ it through the upgrade gate by gate, the same way the upgrade assistant does.
 |---|---|---|
 | [0 — Setup and context](docs/lab/00-setup.md) | — | — |
 | [1 — Parse and deprecations](docs/lab/01-parse-and-deprecations.md) | `dbt parse` | yes |
+| [1b — Macro argument types](docs/lab/01b-macro-argument-types.md) | `dbt parse` warnings | yes |
 | [2 — Compile with analysis off](docs/lab/02-compile-static-analysis-off.md) | `--static-analysis off` | no |
 | [3 — Baseline and strict](docs/lab/03-baseline-and-strict.md) | `baseline` / `strict` | yes |
+| [3b — Dynamic SQL and introspection](docs/lab/03b-dynamic-sql-and-introspection.md) | `strict`, `--no-introspect` | yes |
 | [4 — Run, build, and state](docs/lab/04-run-build-and-state.md) | `dbt build`, `state:` | no |
 | [5 — Deferral and rollout](docs/lab/05-deferral-and-rollout.md) | manifests, deferral | yes |
 
@@ -36,10 +38,16 @@ Every fixture in this project passes on dbt Core. Each one surfaces at exactly
 one gate:
 
 - **Parse** — 13 errors from deprecated YAML and config shapes that dbt Core
-  only warns about, plus 4 macro type-annotation warnings Autofix will not touch
+  only warns about, plus **19** macro type-annotation warnings Autofix will not
+  touch. Matching a real ticket, they span four warehouse types, so the obvious
+  blanket replace clears only 14 of them.
 - **Strict** — three quarantined models carrying a column typo, two ambiguous
   column references, and a missing `group by` column. dbt Core's `compile` says
   nothing about any of them; `dbt run` finds them only by asking Snowflake.
+  Plus a dynamic `PIVOT ... IN (ANY)` that baseline passes and strict rejects.
+- **Introspection** — a macro that queries the warehouse at compile time. Clean
+  in all three analysis modes, and fatal under `--no-introspect` in all three,
+  including `off`.
 - **Deferral** — `static_analysis: off` without quotes, which YAML turns into
   the boolean `False`. Silent locally, fatal for anything deferring to the
   manifest.
@@ -50,9 +58,9 @@ The headline comparison, on identical code:
 |---|---|
 | dbt Core `compile` | silent |
 | dbt Core `run` | 3 Database Errors |
-| v2 `compile --static-analysis off` | 98/98 success |
-| v2 `compile --static-analysis baseline` | 98/98 success |
-| v2 `compile --static-analysis strict` | 3 errors, no warehouse execution |
+| v2 `compile --static-analysis off` | 99/99 success |
+| v2 `compile --static-analysis baseline` | 99/99 success |
+| v2 `compile --static-analysis strict` | 4 errors, no warehouse execution |
 
 Note the third row. **Baseline finds none of them** — it does not download
 remote schemas, so it cannot see column-level defects. Reaching baseline clean
@@ -67,7 +75,7 @@ cp profiles.yml.example profiles.yml     # then fill in your connection
 
 dbt deps
 dbt seed        # ~90s on dbt Core
-dbt build       # expect PASS=92 ERROR=0
+dbt build       # expect PASS=93 ERROR=0
 ```
 
 Then open [Module 0](docs/lab/00-setup.md).
@@ -77,8 +85,9 @@ Then open [Module 0](docs/lab/00-setup.md).
 | Branch | State |
 |---|---|
 | `main` | Core-green starting state — begin here |
-| `solution/01-deprecations` | v2 parse clean; dbt Core still PASS=92 |
-| `solution/03-baseline-strict` | strict clean across 26 models |
+| `solution/01-deprecations` | v2 parse clean, all 19 annotations fixed |
+| `solution/03-baseline-strict` | column-level findings fixed |
+| `solution/03b-dynamic-sql` | strict 99/99, and clean under `--no-introspect` |
 | `exercise/05-broken-deferral` | the deferral trap, pre-applied |
 
 ## Project layout
@@ -95,6 +104,7 @@ models/
     compliance/     custom `audit_table` materialization
     quarantine/     switched-off models with latent defects (Module 3)
 macros/           conforming macros, one introspective macro, one materialization
+  utils/            internal helper library (19 macro args, wrongly annotated)
 snapshots/         1 check-strategy snapshot
 ```
 

@@ -12,8 +12,7 @@ dbt compile --static-analysis baseline
 
 ```
 Finished 'compile' successfully for target 'dev' [1.8s]
-Processed: 23 models | 59 tests | 1 snapshot | 12 seeds
-Summary: 95 total | 95 success
+Summary: 96 total | 96 success
 ```
 
 Clean. If you stopped here you would conclude the project is in good shape.
@@ -25,11 +24,16 @@ dbt compile --static-analysis strict
 ```
 
 ```
-Finished 'compile' successfully for target 'dev' [2.0s]
-Summary: 95 total | 95 success
+[error] [InvalidPivot (dbt0432)]: Dynamic PIVOT with ANY is not supported by
+  dbt static analysis.
+  --> models/marts/agg_payment_method_mix.sql:...
+Finished 'compile' with 1 error for target 'dev'
 ```
 
-Also clean. Good — the 23 models in the nightly job are genuinely sound.
+One finding, on a model that baseline passed a moment ago. Set it aside — it is
+a dynamic-SQL problem and it gets its own module,
+[3b](03b-dynamic-sql-and-introspection.md). The rest of the nightly job is
+sound.
 
 ## Now look at what is not in the graph
 
@@ -81,9 +85,9 @@ Run the same code four ways:
 |---|---|
 | `dbt compile` (dbt Core) | silent, no errors |
 | `dbt run` (dbt Core) | **3 Database Errors** |
-| `dbt compile --static-analysis off` | 98/98 success |
-| `dbt compile --static-analysis baseline` | 98/98 success |
-| `dbt compile --static-analysis strict` | **the same 3 errors** |
+| `dbt compile --static-analysis off` | 99/99 success |
+| `dbt compile --static-analysis baseline` | 99/99 success |
+| `dbt compile --static-analysis strict` | **the same 3 errors**, plus `dbt0432` |
 
 Try the dbt Core half yourself:
 
@@ -146,9 +150,8 @@ Then:
 dbt compile --static-analysis strict --vars 'include_quarantined: true'
 ```
 
-```
-Summary: 98 total | 98 success
-```
+Down to the single `dbt0432` finding from earlier, which
+[Module 3b](03b-dynamic-sql-and-introspection.md) handles.
 
 ## When to opt out instead of fixing
 
@@ -178,3 +181,5 @@ without it. An opt-out that nobody revisits is a permanently unchecked model.
 - Fix findings by default; opt out only with a justification you have tested.
 
 **Solution branch:** `solution/03-baseline-strict`
+
+**Next:** [Module 3b — Dynamic SQL and introspection](03b-dynamic-sql-and-introspection.md)

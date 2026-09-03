@@ -32,7 +32,7 @@ dbt parse
 ```
 
 ```
-Finished 'parse' with 4 warnings and 13 errors for target 'dev'
+Finished 'parse' with 19 warnings and 13 errors for target 'dev'
 ```
 
 The same project. Thirteen errors, and it will not proceed.
@@ -90,7 +90,7 @@ Thirteen errors down to zero. Four warnings remain.
 
 ## Finish the job by hand
 
-Autofix cleared the errors and left the warnings alone:
+Autofix cleared all thirteen errors and left the nineteen warnings alone:
 
 ```
 [warning] [ValidateMacroArgs (dbt1506)]: macros/_macros.yml: Macro
@@ -99,16 +99,11 @@ Autofix cleared the errors and left the warnings alone:
   relation, column, list[T], dict[K,V], optional[T], T1|T2|...
 ```
 
-The macro properties annotate arguments with `varchar` — a warehouse type. dbt's
-type annotations are its own vocabulary, and `string` is the right token.
+Those nineteen are their own exercise — and the obvious fix for them is wrong.
+Go to **[Module 1b — Macro argument types](01b-macro-argument-types.md)**, then
+come back here to verify.
 
-In `macros/_macros.yml`, change all four:
-
-```yaml
-    arguments:
-      - name: column_name
-        type: string        # was: varchar
-```
+Once they are done:
 
 ```bash
 dbt parse
@@ -125,7 +120,7 @@ builds on the engine that is currently serving production:
 
 ```bash
 dbt build      # dbt Core
-Done. PASS=92 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=92
+Done. PASS=93 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=93
 ```
 
 Green, and dbt Core no longer reports deprecations either. Both engines are now
@@ -141,7 +136,8 @@ happy with the same code — which is what makes a staged rollout possible.
 
 - dbt Core's deprecation warnings are dbt Core v2's parse errors. Clearing them
   is not optional cleanup — it is the first gate.
-- Autofix handles the mechanical majority. It does not touch warnings.
+- Autofix handles the mechanical majority. It does not touch warnings — see
+  [Module 1b](01b-macro-argument-types.md) for the nineteen it leaves behind.
 - `--dry-run` first, and re-verify on dbt Core afterwards.
 
 **Solution branch:** `solution/01-deprecations`
