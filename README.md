@@ -54,7 +54,8 @@ one gate:
   Plus a dynamic `PIVOT ... IN (ANY)` that baseline passes and strict rejects.
 - **Introspection** — a macro that queries the warehouse at compile time. Clean
   in all three analysis modes, and fatal under `--no-introspect` in all three,
-  including `off`.
+  including `off`. An incremental model trips the same flag legitimately, so the
+  module also teaches which introspection is worth removing and which is not.
 - **Deferral** — `static_analysis: off` without quotes, which YAML turns into
   the boolean `False`. Silent locally, fatal for anything deferring to the
   manifest.
@@ -94,7 +95,7 @@ Then open [Module 0](docs/lab/00-setup.md).
 | `main` | Core-green starting state — begin here |
 | `solution/01-deprecations` | v2 parse clean, all 19 annotations fixed |
 | `solution/03-baseline-strict` | column-level findings fixed |
-| `solution/03b-dynamic-sql` | strict 99/99, and clean under `--no-introspect` |
+| `solution/03b-dynamic-sql` | strict 102/102, dynamic SQL removed |
 | `exercise/05-broken-deferral` | the deferral trap, pre-applied |
 
 ## Project layout

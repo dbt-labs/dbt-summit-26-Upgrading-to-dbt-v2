@@ -65,6 +65,18 @@ axis. Introspection is its own gate, and it is the one thing `off` does not
 excuse — which matters because any genuine ahead-of-time compile path cannot run
 your queries. Module 3b covers this.
 
+**Do not teach `--no-introspect` as a target.** `is_incremental()` trips the same
+`dbt1307`, because checking whether `this` exists is introspection — so no
+project with an incremental model can ever have a clean `--no-introspect` run.
+The flag is an inventory tool. The judgement it does not make for you is whether
+a given piece of introspection determines the model's **schema**:
+`is_incremental()` changes which rows get written and is fine; a discovered
+column list or pivot value set changes the model's shape and is not.
+
+`fct_payment_events` exists partly to be this control. If a trainee tries to
+drive `--no-introspect` to zero, they will rewrite a perfectly good incremental
+model for nothing.
+
 **Conditional-ephemeral materialization does not break.** `fct_orders_backfill`
 switching to ephemeral under `PIPELINE_RUN_MODE=backfill` compiles and builds
 successfully on both engines, and the downstream model inlines it fine. Teach it
@@ -172,6 +184,7 @@ dynamic-SQL patterns, two different gates, neither one caught by baseline:
 | 1c — Silently ignored config | 30 min | Highest-value module in the lab |
 | 3 — Baseline and strict | 40 min | The core of the lab |
 | 3b — Dynamic SQL and introspection | 30 min | Two gates; do both fixtures |
+| | | Land the `is_incremental()` control |
 | 4 — Run, build, and state | 30 min | Seed state trap needs care |
 | 5 — Deferral and rollout | 25 min | Half exercise, half discussion |
 
@@ -193,7 +206,7 @@ If someone falls behind, they can jump to the relevant branch:
 | `main` | Core-green start |
 | `solution/01-deprecations` | v2 parse clean; deprecations, 19 annotations and 2 config typos fixed |
 | `solution/03-baseline-strict` | column findings fixed, quarantine re-enabled |
-| `solution/03b-dynamic-sql` | strict 99/99 and clean under `--no-introspect` |
+| `solution/03b-dynamic-sql` | strict 102/102; one expected `--no-introspect` hit |
 | `exercise/05-broken-deferral` | the deferral trap, pre-applied |
 
 Modules 2 and 4 change no code, so they have no branch. Module 1b's fix lands

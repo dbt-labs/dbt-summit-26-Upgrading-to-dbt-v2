@@ -161,16 +161,48 @@ All three workarounds disappear with it — no `execute` guard, no
 `load_relation` fallback, no `depends_on` hint. The same `accepted_values` test
 guards the list.
 
-Verify the whole project now compiles with no warehouse introspection at all:
+Re-run the gate:
 
 ```bash
 dbt compile --static-analysis strict --no-introspect
 ```
 
 ```
-Finished 'compile' successfully for target 'dev'
-Summary: 99 total | 99 success
+[error] [DbUnsupportedFeature (dbt1307)]: Not Supported: Introspective queries
+  are disabled (--no-introspect).
+  --> models/marts/fct_payment_events.sql:29:7
 ```
+
+The pivot macro is fixed, and a different model now surfaces. Line 29 is:
+
+```jinja
+{% if is_incremental() %}
+where paid_at >= (select max(paid_at) from {{ this }})
+{% endif %}
+```
+
+`is_incremental()` has to ask the warehouse whether `this` exists yet. **That is
+introspection, and it is unavoidable** — it is what "incremental" means.
+
+!!! important "`--no-introspect` is a diagnostic, not a destination"
+    Do not chase a clean `--no-introspect` run. Any project with an incremental
+    model cannot have one, and that is fine.
+
+    Use the flag to *inventory* your introspection surface, then judge each hit
+    on one question: **does this introspection determine the model's schema?**
+
+    | Introspection | Determines schema? | Verdict |
+    |---|---|---|
+    | `is_incremental()` / `{{ this }}` | No | Fine. Leave it. |
+    | Column list from `run_query` | **Yes** | Remove it. |
+    | Pivot values from the data | **Yes** | Remove it. |
+
+    `is_incremental()` changes *which rows* get written. It does not change what
+    columns the model has, so the graph is still knowable ahead of time. A
+    discovered column list changes the model's shape, which is what actually
+    breaks lineage and downstream type checking.
+
+    The fix above was worth doing. Rewriting `is_incremental()` would not be.
 
 ## The pair, side by side
 
@@ -178,10 +210,16 @@ Summary: 99 total | 99 success
 |---|---|---|---|---|---|
 | Dynamic `PIVOT ... IN (ANY)` | builds | clean | clean | **dbt0432** | clean |
 | Compile-time `run_query` | builds | clean | clean | clean | **dbt1307** |
+| `is_incremental()` | builds | clean | clean | clean | **dbt1307** |
 
-Two patterns that look like the same category of sin, caught by two different
-gates, and **neither caught by baseline**. If your acceptance criterion is
+The first two look like the same category of sin but are caught by two different
+gates, and **neither is caught by baseline**. If your acceptance criterion is
 "baseline is clean", you ship both.
+
+The third is the control: it trips the same flag as the second and is completely
+fine. The flag tells you where introspection happens; it does not tell you which
+of it is a problem. That judgement is yours, and the test is whether the
+introspection determines the model's schema.
 
 ## Takeaways
 
@@ -189,6 +227,9 @@ gates, and **neither caught by baseline**. If your acceptance criterion is
 - Dynamic `PIVOT ... IN (ANY)` fails strict (`dbt0432`); baseline lets it through.
 - Compile-time introspection fails `--no-introspect` (`dbt1307`) in **all three
   modes**, including `off`.
+- `--no-introspect` is an inventory tool, not a target. `is_incremental()` trips
+  it and is perfectly fine. Judge each hit on whether the introspection
+  determines the model's **schema** — that is what breaks the graph.
 - Both fixes are the same move: turn a discovered value into a declared one, and
   let a test guard the declaration.
 - `static_analysis: 'off'` is a legitimate escape hatch with a real cost —
