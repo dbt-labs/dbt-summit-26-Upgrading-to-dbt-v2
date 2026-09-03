@@ -19,8 +19,9 @@ vars:
   # nightly deploy job uses; "backfill" is set by hand for reprocessing runs.
   PIPELINE_RUN_MODE: standard
   copper_per_gold_crown: 100
-  # Quarantined models stay out of the graph unless someone asks for them.
-  include_quarantined: false
+  # Quarantined models are back in the graph as of 2026-09-02, now that Core v2
+  # static analysis identified why each one was broken.
+  include_quarantined: true
 
 models:
   merlinco_apothecaries:
@@ -41,9 +42,9 @@ models:
         +materialized: audit_table
         +static_analysis: 'off'
       quarantine:
-        # Switched off during past incidents and never revisited. Nothing here
-        # is in the nightly job, so the SQL has not been exercised in months.
-        +enabled: "{{ var('include_quarantined', false) }}"
+        # Formerly switched off during past incidents. Static analysis found the
+        # defect in each one, so they are back in the nightly job.
+        +enabled: "{{ var('include_quarantined', true) }}"
         +tags: ['quarantined']
 
 seeds:
