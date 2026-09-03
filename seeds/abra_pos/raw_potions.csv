@@ -1,0 +1,121 @@
+potion_sku,potion_name,category,base_price_copper,potency,shelf_life_days,is_regulated,introduced_at
+POT-0001,Brew of the Quiet Pulse,Healing,100,7,90,TRUE,2021-11-02
+POT-0002,Essence of Swift Recovery,Healing,925,5,180,N,2021-06-10
+POT-0003,Decoction of Silvered Wounds,Healing,475,2,60,N,2020-07-03
+POT-0004,Cordial of Bruisebane,Healing,1450,6,30,N,2020-11-19
+POT-0005,Tincture of Silvered Wounds,Healing,975,1,180,N,2022-12-07
+POT-0006,Essence of the Whole Body,Healing,875,8,14,Y,2025-10-31
+POT-0007,Brew of Feverbreak,Healing,1275,9,60,N,2025-06-18
+POT-0008,Philter of the Quiet Pulse,Healing,950,3,30,N,2025-05-20
+POT-0009,Infusion of Silvered Wounds,Healing,550,4,60,Y,2019-07-25
+POT-0010,Tincture of Mended Bones,Healing,300,8,14,N,2026-01-18
+POT-0011,Essence of the Steady Heart,Healing,1475,8,14,N,2019-04-16
+POT-0012,Elixir of Swift Recovery,HEALING,225,4,14,N,2022-02-26
+POT-0013,Cordial of Knitted Flesh,Healing,800,5,180,N,2025-07-25
+POT-0014,Cordial of the Quiet Pulse,Healing,500,2,30,N,2025-01-29
+POT-0015,Decoction of Feverbreak,Healing,450,5,365,no,2025-10-25
+POT-0016,Philter of Gentle Fevers,Healing,400,7,14,N,2026-02-24
+POT-0017,Tonic of the Quiet Pulse,Healing,1275,10,60,N,2023-06-12
+POT-0018,Decoction of Gentle Fevers,Healing,1050,1,90,N,2021-10-08
+POT-0019,Philter of Silvered Wounds,HEALING,1175,5,180,Y,2024-07-22
+POT-0020,Essence of Gentle Fevers,Healing,1400,8,14,N,2022-04-13
+POT-0021,Draught of Unclouded Thought,Clarity,875,5,365,N,2020-11-06
+POT-0022,Essence of the Clear Eye,Clarity,275,7,180,N,2020-10-06
+POT-0023,Essence of the Open Book,Clarity,675,10,90,N,2019-04-22
+POT-0024,Infusion of Unclouded Thought,Clarity,1500,8,14,Y,2024-03-14
+POT-0025,Tonic of the Waking Dream,Clarity,750,2,30,no,2022-02-02
+POT-0026,Essence of the Waking Dream,Clarity,850,8,30,N,2020-07-13
+POT-0027,Cordial of the Third Question,Clarity,525,7,60,N,2024-11-17
+POT-0028,Tincture of the Waking Dream,CLARITY,875,3,90,N,2026-02-14
+POT-0029,Infusion of the Open Book,Clarity,1200,4,180,no,2020-10-21
+POT-0030,Brew of Quicksilver Wit,Clarity,1150,3,90,N,2025-07-26
+POT-0031,Brew of the Clear Eye,Clarity,825,1,365,yes,2025-09-24
+POT-0032,Draught of Quicksilver Wit,Clarity,1200,7,365,Y,2025-03-29
+POT-0033,Infusion of Focused Mind,Clarity,550,4,365,TRUE,2025-02-26
+POT-0034,Elixir of Focused Mind,Clarity,675,7,30,N,2019-04-25
+POT-0035,Tonic of Unclouded Thought,Clarity,1075,4,90,N,2022-06-02
+POT-0036,Tincture of Quicksilver Wit,Clarity,825,5,365,N,2019-01-20
+POT-0037,Cordial of the Waking Dream,Clarity,825,5,30,no,2025-09-08
+POT-0038,Decoction of Bright Attention,CLARITY,550,1,365,N,2020-08-28
+POT-0039,Elixir of Bright Attention,Clarity,450,10,60,N,2025-04-20
+POT-0040,Tonic of the Clear Eye,Clarity,800,1,180,N,2024-08-10
+POT-0041,Brew of the Kind Roll,Luck,1350,9,60,no,2019-12-26
+POT-0042,Tincture of Serendip,Luck,1475,6,14,N,2023-07-10
+POT-0043,Philter of the Kind Roll,Luck,675,2,90,Y,2023-09-29
+POT-0044,Tincture of Narrow Escapes,Luck,675,2,365,N,2021-02-19
+POT-0045,Infusion of Golden Chances,Luck,1125,2,365,no,2024-02-18
+POT-0046,Decoction of the Winning Hand,Luck,875,2,14,N,2024-04-21
+POT-0047,Brew of the Charmed Hour,Luck,1500,7,365,Y,2023-03-01
+POT-0048,Tincture of Fortunate Turns,Luck,475,6,14,N,2025-02-08
+POT-0049,Brew of Fortunate Turns,LUCK,1450,8,14,N,2020-01-24
+POT-0050,Elixir of Fortunate Turns,LUCK,1350,10,30,Y,2025-03-07
+POT-0051,Philter of Fair Winds,Luck,1050,1,60,N,2019-10-30
+POT-0052,Tincture of Found Coins,Luck,100,6,30,N,2023-11-10
+POT-0053,Tonic of the Kind Roll,Luck,800,6,180,N,2023-03-08
+POT-0054,Cordial of Fortunate Turns,Luck,1125,1,14,N,2025-12-16
+POT-0055,Draught of Serendip,Luck,225,6,180,Y,2025-09-28
+POT-0056,Cordial of the Charmed Hour,LUCK,925,5,90,N,2025-07-26
+POT-0057,Draught of the Charmed Hour,Luck,1500,4,90,N,2025-02-06
+POT-0058,Draught of Golden Chances,Luck,325,8,14,Y,2022-09-24
+POT-0059,Brew of Found Coins,LUCK,975,6,365,Y,2026-02-21
+POT-0060,Decoction of Fortunate Turns,Luck,250,10,180,N,2026-03-07
+POT-0061,Draught of Bull's Vigor,Strength,275,5,180,N,2023-09-28
+POT-0062,Cordial of Granite Will,Strength,125,10,365,N,2022-10-14
+POT-0063,Tincture of Bull's Vigor,Strength,1475,3,180,N,2020-12-19
+POT-0064,Elixir of the Ox's Burden,Strength,700,7,90,N,2023-03-09
+POT-0065,Draught of Iron Sinews,Strength,1075,1,365,Y,2019-11-15
+POT-0066,Cordial of Tireless Arms,Strength,275,6,90,Y,2020-03-17
+POT-0067,Infusion of the Long March,STRENGTH,175,1,30,N,2021-03-20
+POT-0068,Tincture of the Long March,Strength,775,3,30,N,2019-01-16
+POT-0069,Brew of the Ox's Burden,Strength,125,8,14,N,2023-02-28
+POT-0070,Decoction of the Long March,STRENGTH,350,10,90,no,2019-02-12
+POT-0071,Draught of Stone Grip,Strength,725,5,365,N,2021-03-31
+POT-0072,Infusion of the Ox's Burden,STRENGTH,650,6,365,N,2020-02-02
+POT-0073,Draught of Unbent Knees,Strength,1300,2,30,N,2019-12-22
+POT-0074,Essence of Granite Will,Strength,1100,6,30,N,2026-04-01
+POT-0075,Tincture of Granite Will,Strength,825,8,14,Y,2021-11-05
+POT-0076,Draught of Granite Will,Strength,975,1,90,N,2025-07-29
+POT-0077,Infusion of Unbent Knees,Strength,1425,6,365,Y,2025-10-05
+POT-0078,Essence of Tireless Arms,Strength,675,5,90,N,2022-06-02
+POT-0079,Infusion of the Heavy Lift,Strength,1050,3,60,Y,2023-01-22
+POT-0080,Tincture of the Heavy Lift,STRENGTH,575,9,90,N,2022-12-22
+POT-0081,Infusion of the Unseen Guest,Invisibility,900,6,14,N,2022-08-16
+POT-0082,Essence of Fading Footsteps,INVISIBILITY,325,2,60,N,2020-04-08
+POT-0083,Infusion of Passing Shadows,Invisibility,1325,10,30,N,2022-09-17
+POT-0084,Cordial of Thin Air,Invisibility,750,6,365,FALSE,2023-01-16
+POT-0085,Infusion of Fading Footsteps,INVISIBILITY,1350,8,30,no,2020-09-25
+POT-0086,Essence of the Missed Glance,Invisibility,350,4,180,Y,2025-11-27
+POT-0087,Brew of the Empty Chair,Invisibility,550,2,30,no,2025-12-11
+POT-0088,Decoction of the Unseen Guest,Invisibility,1500,6,14,N,2025-02-13
+POT-0089,Brew of Fading Footsteps,Invisibility,1225,6,30,Y,2024-03-21
+POT-0090,Tonic of Veiled Faces,INVISIBILITY,125,5,30,N,2019-01-11
+POT-0091,Infusion of the Quiet Room,Invisibility,275,1,30,N,2020-08-13
+POT-0092,Draught of Veiled Faces,Invisibility,1000,4,365,Y,2024-07-17
+POT-0093,Philter of Forgotten Names,Invisibility,925,6,14,N,2022-09-22
+POT-0094,Infusion of the Empty Chair,Invisibility,1100,7,60,N,2023-11-24
+POT-0095,Draught of Forgotten Names,Invisibility,650,9,60,N,2025-06-06
+POT-0096,Essence of Veiled Faces,Invisibility,1325,8,14,N,2024-11-16
+POT-0097,Elixir of Smoke and Dusk,Invisibility,1400,9,90,N,2025-12-10
+POT-0098,Brew of Passing Shadows,Invisibility,1375,6,90,N,2025-06-05
+POT-0099,Decoction of Smoke and Dusk,Invisibility,675,9,60,N,2025-11-21
+POT-0100,Infusion of the Missed Glance,Invisibility,550,5,90,N,2019-06-13
+POT-0101,Brew of Moonlit Vows,Love,650,10,90,FALSE,2019-03-28
+POT-0102,Draught of the Long Letter,Love,1275,3,14,Y,2021-01-14
+POT-0103,Elixir of Honeyed Words,Love,1125,6,60,N,2019-05-18
+POT-0104,Essence of Sweet Meetings,Love,200,10,30,N,2021-01-31
+POT-0105,Philter of the First Blush,Love,875,9,90,N,2019-02-23
+POT-0106,Essence of the Second Glance,Love,875,4,14,Y,2025-04-19
+POT-0107,Essence of the First Blush,Love,1225,2,180,no,2025-05-24
+POT-0108,Tonic of Sweet Meetings,LOVE,1350,3,30,N,2019-09-06
+POT-0109,Infusion of Honeyed Words,Love,725,8,180,N,2024-09-27
+POT-0110,Draught of Moonlit Vows,Love,1500,9,365,N,2021-11-25
+POT-0111,Infusion of Warm Regard,Love,350,3,60,N,2025-12-13
+POT-0112,Infusion of Tender Hearts,Love,975,5,30,N,2025-03-14
+POT-0113,Tonic of Kindled Sparks,Love,1075,10,60,N,2024-12-05
+POT-0114,Elixir of the First Blush,Love,500,4,180,N,2022-08-06
+POT-0115,Tincture of Moonlit Vows,Love,575,8,14,N,2023-07-12
+POT-0116,Brew of Kindled Sparks,Love,1250,6,90,Y,2023-10-31
+POT-0117,Brew of the Second Glance,Love,325,2,14,N,2020-07-01
+POT-0118,Philter of Honeyed Words,Love,400,3,90,N,2026-02-12
+POT-0119,Essence of Warm Regard,Love,475,4,180,N,2021-03-16
+POT-0120,Essence of Tender Hearts,Love,300,5,365,N,2023-10-02

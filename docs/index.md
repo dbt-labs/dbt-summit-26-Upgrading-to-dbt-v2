@@ -1,20 +1,19 @@
 # ⚡ dbt Fusion Upgrade Training
 
-Welcome to the **Coalesce 2025 dbt Fusion Upgrade Training**! This training repository provides hands-on experience upgrading from **dbt Core to dbt Fusion**. Below you'll find useful links and information to following along in your own sandbox.
+Welcome to the **Summit 2026 Upgrading to dbt v2 Training**! This training repository provides hands-on experience upgrading from **dbt Core <v2.0 to dbt v2+**. Below you'll find useful links and information to following along in your own sandbox.
 
 ## Workshop Account Setup
 
 Use this link: [https://workshops.us1.dbt.com/workshop](https://workshops.us1.dbt.com/workshop)
 <br>
-Find the course by name: Upgrading to Fusion
+Find the course by name: Upgrading to dbt v2
 <br>
-Passcode `Coalesce2025!`
+Passcode `Summit2026!`
 
 ## Helpful Links
 
-- Google Slides: [https://docs.google.com/presentation/d/19SHxMd5H2_OF4MqJgyCIv96MrxGpXpGu_DPtpRYAwhg/edit?usp=sharing](https://docs.google.com/presentation/d/19SHxMd5H2_OF4MqJgyCIv96MrxGpXpGu_DPtpRYAwhg/edit?usp=sharing)
-- Demo Repository: [https://github.com/dbt-labs/Coalesce-2025-Upgrading-to-Fusion](https://github.com/dbt-labs/Coalesce-2025-Upgrading-to-Fusion)
-- [Clone Environment Setup](https://share.1password.com/s#0qp-sDi8LWrwr6TwWojHl3J2-e_1tQPj0BPWlQswQQs)
+- Google Slides: [https://docs.google.com/presentation/d/1mGREYqR_SCkWQh6vfjtmjAtRP8xdt83Ky6dHBw2Fu44/edit?usp=sharing](https://docs.google.com/presentation/d/1mGREYqR_SCkWQh6vfjtmjAtRP8xdt83Ky6dHBw2Fu44/edit?usp=sharing)
+- Demo Repository: [https://github.com/dbt-labs/dbt-summit-26-Upgrading-to-dbt-v2](https://github.com/dbt-labs/dbt-summit-26-Upgrading-to-dbt-v2)
 
 ## Getting your project compiling
 
@@ -28,4 +27,4 @@ You'll have access to the workshop account for 7 days if you need to go back and
 
 ## Survey
 
-Please use [this link](https://dbtlearn.typeform.com/coalesce-2025) to give feedback on the training!
+Please use [this link](https://tinyurl.com/dbt-summit-survey) to give feedback on the training!

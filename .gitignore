@@ -18,3 +18,9 @@ dbt_internal_packages/
 
 # MkDocs build output
 site/
+# Local prod-manifest stand-in for the deferral module
+state/
+package-lock.yml
+
+# Internal research notes -- references internal tickets, keep out of the trainee repo
+research.md

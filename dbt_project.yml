@@ -1,20 +1,15 @@
+name: 'merlinco_apothecaries'
+version: '1.0.0'
 config-version: 2
 
-name: "jaffle_shop"
-version: "3.0.0"
-require-dbt-version: ">=1.5.0"
-
-dbt-cloud:
-    project-id: 123456 # update with your project ID in workshop account!
-
-profile: upgrading_to_fusion
+profile: 'sa_snowflake'
 
 model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["data-tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
 
 target-path: "target"
 clean-targets:
@@ -22,37 +17,40 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  "dbt_date:time_zone": "America/Los_Angeles"
-  # Saved query export configuration - soft blocker
-  enable_saved_query_exports: true
-  saved_query_export_path: "exports/saved_queries"
-  # Additional variables that may cause issues
-  environment: "production"  # DEPRECATED: Should use target.name
-  debug_mode: true  # Used by deprecated macros
-  base_url: "https://api.example.com"  # Used in deprecated var usage
-  expected_rows_customers: 1000
-  expected_rows_orders: 5000
-
-# Behavior change flags for modern dbt practices and migration testing
-flags:
-  require_explicit_package_overrides_for_builtin_materializations: true
-  require_model_names_without_spaces: true
-  source_freshness_run_project_hooks: true
-  restrict_direct_pg_catalog_access: false
-  skip_nodes_if_on_run_start_fails: false
-  state_modified_compare_more_unrendered_values: true
-  require_yaml_configuration_for_mf_time_spines: false
-  require_batched_execution_for_custom_microbatch_strategy: false
-  require_nested_cumulative_type_params: false
-  validate_macro_args: true
-  require_generic_test_arguments_property: true
+  # Controls how the order fact tables materialize. "standard" is what the
+  # nightly deploy job uses; "backfill" is set by hand for reprocessing runs.
+  PIPELINE_RUN_MODE: standard
+  copper_per_gold_crown: 100
 
 models:
-  jaffle_shop:
+  merlinco_apothecaries:
+    +materialized: view
     staging:
-      +materialized: view
+      grimoire_crm:
+        +schema: staging
+      abra_pos:
+        +schema: staging
+      alembic_ops:
+        +schema: staging
+    intermediate:
+      +materialized: ephemeral
     marts:
-      +materialized: table
-      +persist_docs:   # Missing + prefix (dbt Core ignores, Fusion validates)
-        relation: true
-        columns: true
+      materialized: table
+      +tags: ['core_lab']
+      compliance:
+        +materialized: audit_table
+        +static_analysis: 'off'
+
+seeds:
+  merlinco_apothecaries:
+    +schema: raw
+    grimoire_crm:
+      +tags: ['crm']
+    abra_pos:
+      +tags: ['pos']
+    alembic_ops:
+      +tags: ['ops']
+
+snapshots:
+  merlinco_apothecaries:
+    +target_schema: snapshots
