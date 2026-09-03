@@ -32,7 +32,7 @@ brew_stats as (
         count(*) as brew_event_count,
         sum(batch_size) as total_units_brewed,
         avg(brew_duration_minutes) as avg_brew_duration_minutes,
-        count_if(quality_check = 'fail') / nullif(count(*), 0)::float as brew_failure_rate
+        {{ safe_divide("count_if(quality_check = 'fail')", "count(*)::float") }} as brew_failure_rate
 
     from {{ ref('stg_alembic_ops__brew_events') }}
     group by potion_sku

@@ -31,6 +31,7 @@ final as (
         orders.ordered_at,
         orders.order_status,
         orders.channel,
+        {{ is_weekend('orders.ordered_at') }} as is_weekend_order,
         orders.shop_name,
         orders.shop_region,
         orders.customer_name,
