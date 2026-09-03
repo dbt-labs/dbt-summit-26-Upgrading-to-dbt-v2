@@ -1,6 +1,6 @@
-site_name: dbt Fusion Upgrade Training
-site_description: Training materials for upgrading from dbt Core to dbt Fusion
-site_url: https://dbt-labs.github.io/Coalesce-2025-Upgrading-to-Fusion/
+site_name: Upgrading to dbt Core v2
+site_description: Training materials for upgrading a dbt Core project to dbt Core v2
+site_url: https://dbt-labs.github.io/dbt-summit-26-Upgrading-to-dbt-v2/
 
 theme:
   name: material
@@ -46,9 +46,17 @@ markdown_extensions:
   - pymdownx.details
   - admonition
 
-repo_url: https://github.com/dbt-labs/Coalesce-2025-Upgrading-to-Fusion
-repo_name: dbt-labs/Coalesce-2025-Upgrading-to-Fusion
+repo_url: https://github.com/dbt-labs/dbt-summit-26-Upgrading-to-dbt-v2
+repo_name: dbt-labs/dbt-summit-26-Upgrading-to-dbt-v2
 edit_uri: edit/main/docs/
 
 nav:
   - Home: index.md
+  - Lab:
+      - 0 - Setup and context: lab/00-setup.md
+      - 1 - Parse and deprecations: lab/01-parse-and-deprecations.md
+      - 2 - Compile with analysis off: lab/02-compile-static-analysis-off.md
+      - 3 - Baseline and strict: lab/03-baseline-and-strict.md
+      - 4 - Run, build, and state: lab/04-run-build-and-state.md
+      - 5 - Deferral and rollout: lab/05-deferral-and-rollout.md
+  - Instructor notes: instructor-notes.md

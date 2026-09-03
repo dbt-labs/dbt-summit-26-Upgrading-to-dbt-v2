@@ -1,4 +1,4 @@
-# ⚡ dbt Fusion Upgrade Training
+# ⚡ Upgrading to dbt Core v2
 
 Welcome to the **Summit 2026 Upgrading to dbt v2 Training**! This training repository provides hands-on experience upgrading from **dbt Core <v2.0 to dbt v2+**. Below you'll find useful links and information to following along in your own sandbox.
 
@@ -9,6 +9,19 @@ Use this link: [https://workshops.us1.dbt.com/workshop](https://workshops.us1.db
 Find the course by name: Upgrading to dbt v2
 <br>
 Passcode `Summit2026!`
+
+## The lab
+
+Work through the modules in order. Each one maps to a gate in the upgrade flow:
+
+| Module | Gate |
+|---|---|
+| [0 — Setup and context](lab/00-setup.md) | — |
+| [1 — Parse and deprecations](lab/01-parse-and-deprecations.md) | `dbt parse` |
+| [2 — Compile with analysis off](lab/02-compile-static-analysis-off.md) | `--static-analysis off` |
+| [3 — Baseline and strict](lab/03-baseline-and-strict.md) | `baseline` / `strict` |
+| [4 — Run, build, and state](lab/04-run-build-and-state.md) | `dbt build`, `state:` |
+| [5 — Deferral and rollout](lab/05-deferral-and-rollout.md) | manifests, deferral |
 
 ## Helpful Links
 
