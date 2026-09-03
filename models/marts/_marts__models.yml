@@ -79,6 +79,17 @@ models:
       - name: pipeline_run_mode
         description: "{{ doc('pipeline_run_mode') }}"
 
+  - name: fct_payment_events
+    description: >
+      Payment attempts, built incrementally. The reload window deliberately
+      re-reads the boundary period, because a payment can land with a paid_at
+      slightly behind the previous high-water mark.
+    columns:
+      - name: payment_id
+        description: "Source primary key."
+      - name: paid_at
+        description: "Payment timestamp. Drives the incremental window."
+
   - name: agg_revenue_by_region
     description: "Region-by-month revenue rollup, normalized per shop."
     columns:

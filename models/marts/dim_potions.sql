@@ -1,6 +1,11 @@
+{#
+  Small dimension -- 120 potions -- so this is a view rather than a table. No
+  point paying for storage and a rebuild on something this size.
+#}
+
 {{
     config(
-        materialized = 'table'
+        materialised = 'view'
     )
 }}
 
