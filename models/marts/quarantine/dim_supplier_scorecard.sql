@@ -1,10 +1,9 @@
 {#
-  QUARANTINED 2026-01-29.
+  Supplier scorecard for procurement.
 
-  Procurement asked for a supplier scorecard, then re-scoped the request before
-  this shipped. Left in the repo, switched off, in case they come back to it.
-
-  Re-enable with:  --vars 'include_quarantined: true'
+  Un-quarantined 2026-09-02 after Core v2 static analysis pinned down why it
+  never shipped: it selected suppliers.contract_start_date, a column that has
+  never existed on the suppliers model. The real column is contracted_since.
 #}
 
 select
@@ -15,7 +14,7 @@ select
     count(distinct ingredients.ingredient_id) as ingredient_count,
     avg(ingredients.unit_cost_gold) as avg_unit_cost_gold,
     count_if(ingredients.is_hazardous) as hazardous_ingredient_count,
-    suppliers.contract_start_date
+    suppliers.contracted_since
 
 from {{ ref('stg_alembic_ops__suppliers') }} as suppliers
 left join {{ ref('stg_alembic_ops__ingredients') }} as ingredients
@@ -26,4 +25,4 @@ group by
     suppliers.supplier_name,
     suppliers.region,
     suppliers.reliability_rating,
-    suppliers.contract_start_date
+    suppliers.contracted_since
