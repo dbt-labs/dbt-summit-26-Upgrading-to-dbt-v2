@@ -1,6 +1,6 @@
 with source as (
 
-    select * from {{ ref('raw_guild_memberships') }}
+    select * from {{ source('grimoire_crm', 'raw_guild_memberships') }}
 
 ),
 

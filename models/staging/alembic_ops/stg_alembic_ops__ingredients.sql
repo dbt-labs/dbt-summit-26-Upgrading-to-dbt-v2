@@ -1,6 +1,6 @@
 with source as (
 
-    select * from {{ ref('raw_ingredients') }}
+    select * from {{ source('alembic_ops', 'raw_ingredients') }}
 
 ),
 

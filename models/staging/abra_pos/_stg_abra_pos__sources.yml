@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: abra_pos
+    description: "Point-of-sale extract, landed via seed load into raw."
+    database: dbt_learn
+    schema: raw
+    tables:
+      - name: raw_potions
+        description: "Raw potion catalogue from the abra_pos point-of-sale system."
+      - name: raw_orders
+        description: "Raw order headers from abra_pos. One row per order."
+      - name: raw_order_items
+        description: "Raw order lines from abra_pos. One row per potion per order."
+      - name: raw_payments
+        description: "Raw payment attempts from abra_pos. Splits, failures and refunds each get a row."

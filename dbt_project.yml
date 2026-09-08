@@ -45,6 +45,7 @@ models:
 
 seeds:
   merlinco_apothecaries:
+    +enabled: false
     +database: dbt_learn
     +schema: raw
     grimoire_crm:

@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: alembic_ops
+    description: "Production/operations extract, landed via seed load into raw."
+    database: dbt_learn
+    schema: raw
+    tables:
+      - name: raw_shops
+        description: "Raw shop dimension from alembic_ops. Region spelling here is canonical."
+      - name: raw_suppliers
+        description: "Raw supplier dimension from alembic_ops."
+      - name: raw_ingredients
+        description: "Raw ingredient dimension from alembic_ops."
+      - name: raw_potion_ingredients
+        description: "Raw recipe bridge. Natural key is (potion_sku, ingredient_id)."
+      - name: raw_brew_events
+        description: "Raw production batches from alembic_ops. One row per brew."

@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: grimoire_crm
+    description: "CRM extract, landed via seed load into raw."
+    database: dbt_learn
+    schema: raw
+    tables:
+      - name: raw_customers
+        description: "Raw customer records landed from the grimoire_crm CRM extract."
+      - name: raw_guilds
+        description: "Raw guild reference data from grimoire_crm."
+      - name: raw_guild_memberships
+        description: "Raw customer-to-guild membership intervals (SCD2 shaped at source)."
