@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: grimoire_crm
     description: "CRM extract, landed via seed load into raw."
-    database: dbt_learn
-    schema: raw
+    database: RAW
+    schema: MERLINCO_APOTHECARIES
     tables:
       - name: raw_customers
         description: "Raw customer records landed from the grimoire_crm CRM extract."

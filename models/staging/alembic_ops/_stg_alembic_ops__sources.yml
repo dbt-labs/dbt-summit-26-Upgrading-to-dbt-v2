@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: alembic_ops
     description: "Production/operations extract, landed via seed load into raw."
-    database: dbt_learn
-    schema: raw
+    database: RAW
+    schema: MERLINCO_APOTHECARIES
     tables:
       - name: raw_shops
         description: "Raw shop dimension from alembic_ops. Region spelling here is canonical."

@@ -3,14 +3,14 @@ version: 2
 sources:
   - name: abra_pos
     description: "Point-of-sale extract, landed via seed load into raw."
-    database: dbt_learn
-    schema: raw
+    database: RAW
+    schema: MERLINCO_APOTHECARIES
     tables:
-      - name: raw_potions
-        description: "Raw potion catalogue from the abra_pos point-of-sale system."
       - name: raw_orders
-        description: "Raw order headers from abra_pos. One row per order."
+        description: "Raw order header records from abra_pos."
       - name: raw_order_items
-        description: "Raw order lines from abra_pos. One row per potion per order."
+        description: "Raw order line items from abra_pos. Natural key is order_item_id."
       - name: raw_payments
-        description: "Raw payment attempts from abra_pos. Splits, failures and refunds each get a row."
+        description: "Raw payment records from abra_pos."
+      - name: raw_potions
+        description: "Raw potion dimension from abra_pos."
