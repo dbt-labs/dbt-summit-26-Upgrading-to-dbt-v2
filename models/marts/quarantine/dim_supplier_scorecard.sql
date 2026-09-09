@@ -15,7 +15,7 @@ select
     count(distinct ingredients.ingredient_id) as ingredient_count,
     avg(ingredients.unit_cost_gold) as avg_unit_cost_gold,
     count_if(ingredients.is_hazardous) as hazardous_ingredient_count,
-    suppliers.contract_start_date
+    suppliers.contracted_since as contract_start_date
 
 from {{ ref('stg_alembic_ops__suppliers') }} as suppliers
 left join {{ ref('stg_alembic_ops__ingredients') }} as ingredients
@@ -26,4 +26,4 @@ group by
     suppliers.supplier_name,
     suppliers.region,
     suppliers.reliability_rating,
-    suppliers.contract_start_date
+    suppliers.contracted_since

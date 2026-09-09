@@ -20,7 +20,7 @@ vars:
   PIPELINE_RUN_MODE: standard
   copper_per_gold_crown: 100
   # Quarantined models stay out of the graph unless someone asks for them.
-  include_quarantined: false
+  include_quarantined: true
 
 models:
   merlinco_apothecaries:
@@ -37,7 +37,7 @@ models:
       quarantine:
         # Switched off during past incidents and never revisited. Nothing here
         # is in the nightly job, so the SQL has not been exercised in months.
-        +enabled: "{{ var('include_quarantined', false) }}"
+        +enabled: "{{ var('include_quarantined', true) }}"
         +tags: ['quarantined']
       +materialized: table
 
