@@ -256,6 +256,85 @@ dbt run --select fct_payment_events                   # idempotent now
 fixed, after 2 incremental runs   17156 |  17156 |  0
 ```
 
+## Not every unrecognized key is a typo
+
+`materialised` and `unique_keys` are both misspellings of real config keys, and
+the fix for both is to spell them correctly. But dbt does not have a way to
+tell "typo" from "deliberate custom key" apart — which is why Core v2 flags
+both with the same `dbt1060`, and why Autofix relocates both to `meta` without
+asking.
+
+`fct_regulated_potion_sales` shows the other case:
+
+```jinja
+{{
+    config(
+        compliance_owner = 'guild-audit-team'
+    )
+}}
+```
+
+`compliance_owner` is not a typo of anything. Compliance actually wants to know
+who to call about a given regulator-facing table, and the house `audit_table`
+materialization reads it and stamps it into every ledger row:
+
+```jinja
+{%- set compliance_owner = config.get('compliance_owner', 'unassigned') -%}
+...
+insert into {{ ledger_relation }} (..., compliance_owner)
+select ..., '{{ compliance_owner }}'
+```
+
+This is exactly the shape `CustomKeyInConfigDeprecation` exists for: a custom
+config key dbt does not recognize as part of the official spec, used in a
+config block in a SQL file (it applies the same way to YAML `config:` blocks).
+Run it with dbt Core:
+
+```bash
+dbt parse --show-all-deprecations
+```
+
+```
+[WARNING][CustomKeyInConfigDeprecation]: Deprecated functionality
+Custom config key `compliance_owner` found. Custom config keys should be
+nested under the `meta` config.
+```
+
+Unlike `materialised` and `unique_keys`, dbt Core does **not** discard this
+value — `compliance_owner` still works, the ledger still gets stamped, nothing
+is silently broken. This is purely a "get ahead of the v2 upgrade" warning: on
+Core v2, an unrecognized top-level key is a hard parse error regardless of
+whether it was a typo or on purpose.
+
+The fix is the one `PropertyMovedToConfigDeprecation` already trained you for
+— nest it under `meta`, do not rename it:
+
+```jinja
+{{ config(
+    meta={'compliance_owner': 'guild-audit-team'}
+) }}
+```
+
+And because a macro actually reads this key, the macro has to move with it —
+Autofix rewrites the model's config, but it will not touch
+`macros/materializations/audit_table.sql` for you:
+
+```jinja
+{%- set compliance_owner = config.get('meta', {}).get('compliance_owner', 'unassigned') -%}
+```
+
+Skip that second edit and the fix only *looks* complete: `dbt parse` goes
+green, but the materialization silently falls back to `'unassigned'` for
+every regulator-facing table, and Compliance loses the one thing this
+whole mechanism exists to give them.
+
+!!! note "Why Autofix is safe to trust here, and wasn't above"
+    For `compliance_owner`, "move it to `meta`" is genuinely correct — there is
+    no typo underneath it to paper over. That is the difference between this
+    key and `materialised`/`unique_keys`: the risk was never in *where*
+    Autofix put the key, it was in Autofix being unable to tell the two cases
+    apart. Read the dry run either way.
+
 ## Takeaways
 
 - dbt Core silently drops config keys it does not recognise. Intent and reality
@@ -266,5 +345,10 @@ fixed, after 2 incremental runs   17156 |  17156 |  0
 - **Autofix will move a typo'd key to `meta`**, turning the error green while
   leaving the bug in place and making it look intentional. Read the dry run.
 - Fix the key, add the test whose absence hid it, and plan the backfill.
+- Not every unrecognized key is a mistake. `CustomKeyInConfigDeprecation` warns
+  about deliberate custom keys too — same message, same `meta` fix as
+  `PropertyMovedToConfigDeprecation`, but this time the fix is "move it," not
+  "spell it correctly." If a macro reads the key directly, moving it under
+  `meta` means updating the macro too, or the fix only looks complete.
 
 **Solution branch:** `solution/01-deprecations`

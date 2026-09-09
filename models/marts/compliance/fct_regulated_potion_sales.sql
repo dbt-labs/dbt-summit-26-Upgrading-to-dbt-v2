@@ -2,8 +2,16 @@
   Regulator-facing extract of sales for Guild-regulated potions.
 
   Built with the house `audit_table` materialization so every rebuild is stamped
-  into merlinco_build_ledger for Compliance.
+  into merlinco_build_ledger for Compliance. compliance_owner tells the
+  materialization who to attribute the ledger entry to when the Guild comes
+  asking who signed off on a rebuild.
 #}
+
+{{
+    config(
+        compliance_owner = 'guild-audit-team'
+    )
+}}
 
 with order_items as (
 

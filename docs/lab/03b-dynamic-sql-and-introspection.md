@@ -82,6 +82,8 @@ That is a real option, not a cop-out — but understand the cost. The model is
 then never checked, and nothing downstream of it can be type-checked through it.
 Prefer enumeration where the value set is small and already governed.
 
+Or a third option, you can pass the column names instead of `any`
+
 ## Fixture 2 — compile-time introspection
 
 `get_potion_categories()` discovers the category list by querying the warehouse

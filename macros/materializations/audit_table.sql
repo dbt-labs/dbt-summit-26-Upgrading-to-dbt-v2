@@ -24,22 +24,26 @@
         identifier = 'merlinco_build_ledger'
     ) -%}
 
+    {%- set compliance_owner = config.get('compliance_owner', 'unassigned') -%}
+
     {%- call statement('create_ledger') -%}
         create table if not exists {{ ledger_relation }} (
             relation_name varchar,
             built_at timestamp_ntz,
             invocation_id varchar,
-            row_count number
+            row_count number,
+            compliance_owner varchar
         )
     {%- endcall -%}
 
     {%- call statement('write_ledger') -%}
-        insert into {{ ledger_relation }} (relation_name, built_at, invocation_id, row_count)
+        insert into {{ ledger_relation }} (relation_name, built_at, invocation_id, row_count, compliance_owner)
         select
             '{{ target_relation }}',
             current_timestamp()::timestamp_ntz,
             '{{ invocation_id }}',
-            count(*)
+            count(*),
+            '{{ compliance_owner }}'
         from {{ target_relation }}
     {%- endcall -%}
 

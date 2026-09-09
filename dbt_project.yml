@@ -40,14 +40,14 @@ models:
       quarantine:
         # Switched off during past incidents and never revisited. Nothing here
         # is in the nightly job, so the SQL has not been exercised in months.
-        +enabled: "{{ var('include_quarantined', false) }}"
+        +enabled: "{{ var('include_quarantined') }}"
         +tags: ['quarantined']
 
 seeds:
   merlinco_apothecaries:
     +enabled: false
-    +database: dbt_learn
-    +schema: raw
+    +database: raw
+    +schema: merlinco_apothecaries
     grimoire_crm:
       +tags: ['crm']
     abra_pos:
