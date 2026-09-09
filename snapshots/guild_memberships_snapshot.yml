@@ -1,0 +1,12 @@
+snapshots:
+  - name: guild_memberships_snapshot
+    relation: ref('stg_grimoire_crm__guild_memberships')
+    description: "Check-strategy snapshot tracking guild tier changes over time."
+    config:
+      unique_key: membership_id
+      strategy: check
+      check_cols: ['tier', 'guild_id', 'valid_to']
+      hard_deletes: invalidate
+    columns:
+      - name: membership_id
+        description: "Source primary key. Not unique in the snapshot -- one row per version."

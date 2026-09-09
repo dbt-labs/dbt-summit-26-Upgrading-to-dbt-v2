@@ -111,10 +111,3 @@ models:
         description: "Canonical shop region."
       - name: revenue_total_gold
         description: "Total revenue across all categories, in gold crowns."
-
-snapshots:
-  - name: guild_memberships_snapshot
-    description: "Check-strategy snapshot tracking guild tier changes over time."
-    columns:
-      - name: membership_id
-        description: "Source primary key. Not unique in the snapshot -- one row per version."
