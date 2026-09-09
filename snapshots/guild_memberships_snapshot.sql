@@ -7,7 +7,6 @@
 
 {{
     config(
-        target_schema = 'snapshots',
         unique_key = 'membership_id',
         strategy = 'check',
         check_cols = ['tier', 'guild_id', 'valid_to'],
