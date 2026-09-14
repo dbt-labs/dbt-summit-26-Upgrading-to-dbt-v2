@@ -16,14 +16,6 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-vars:
-  # Controls how the order fact tables materialize. "standard" is what the
-  # nightly deploy job uses; "backfill" is set by hand for reprocessing runs.
-  PIPELINE_RUN_MODE: standard
-  copper_per_gold_crown: 100
-  # Quarantined models stay out of the graph unless someone asks for them.
-  include_quarantined: false
-
 models:
   merlinco_apothecaries:
     +materialized: view
