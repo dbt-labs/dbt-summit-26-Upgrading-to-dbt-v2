@@ -8,7 +8,7 @@ Use this link: [https://workshops.us1.dbt.com/workshop](https://workshops.us1.db
 <br>
 Find the course by name: Upgrading to dbt v2
 <br>
-Passcode `Summit2026!`
+Get the passcode from your instructor.
 
 ## The lab
 
@@ -24,7 +24,7 @@ Work through the modules in order. Each one maps to a gate in the upgrade flow:
 | [3 — Baseline and strict](lab/03-baseline-and-strict.md) | `baseline` / `strict` |
 | [3b — Dynamic SQL and introspection](lab/03b-dynamic-sql-and-introspection.md) | `strict`, `--no-introspect` |
 | [4 — Run, build, and state](lab/04-run-build-and-state.md) | `dbt build`, `state:` |
-| [5 — Deferral and rollout](lab/05-deferral-and-rollout.md) | manifests, deferral |
+| [5 — Scaling the rollout](lab/05-scaling-the-rollout.md) | manifests, deferral |
 
 ## Helpful Links
 

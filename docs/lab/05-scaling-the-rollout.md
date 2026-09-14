@@ -1,4 +1,4 @@
-# Module 6 — Scaling the rollout: cloning production, permissions, and overrides
+# Module 5 — Scaling the rollout: cloning production, permissions, and overrides
 
 **Gate:** none of your own — this module takes the deferral mechanics from
 Module 5 and applies them at the scale of a real account: one project with

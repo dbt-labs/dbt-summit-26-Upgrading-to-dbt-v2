@@ -94,63 +94,6 @@ merlinco_apothecaries.marts.unique_dim_potions_potion_sku
 dbt Core reports exactly the same three nodes. Cross-engine state comparison
 agrees on models — no spurious modifications.
 
-### Seeds are a different story
-
-Look at what dbt Core said while doing that comparison:
-
-```
-Found a seed (merlinco_apothecaries.raw_order_items) >1MB in size at the same
-path, dbt cannot tell if it has changed: assuming they are the same
-Found a seed (merlinco_apothecaries.raw_orders) >1MB ...
-Found a seed (merlinco_apothecaries.raw_payments) >1MB ...
-```
-
-Three seeds are over the 1 MiB hashing limit, so neither engine hashes their
-contents — they fall back to a path-based checksum. Prove it:
-
-```bash
-echo "ORD-999999,WIZ-00001,SHP-01,2025-12-31T23:59:59Z,completed,in_store,0" \
-  >> seeds/abra_pos/raw_orders.csv
-
-dbt list --select state:modified --state state
-```
-
-Nothing. **A real data change in a large seed is invisible to a state-based
-job.** If your CI or nightly job selects `state:modified`, edits to big seeds
-silently do not deploy.
-
-dbt Core v2 lets you raise the limit:
-
-```bash
-dbt list --maximum-seed-size-mib 8 --select state:modified --state state
-```
-
-```
-merlinco_apothecaries.abra_pos.raw_order_items
-merlinco_apothecaries.abra_pos.raw_orders
-merlinco_apothecaries.abra_pos.raw_payments
-```
-
-Now look carefully: **all three** are reported, but you only edited one.
-
-The state manifest was produced by dbt Core at the 1 MiB default, so it holds
-path-based checksums for those seeds. dbt Core v2 is now computing content
-hashes. The two can never match, so all three large seeds will read as modified
-on every run, forever.
-
-This is the "seeds unexpectedly appear as modified" report, and it is an
-artifact-mismatch problem, not a code problem. Options:
-
-- keep the limit consistent across whichever engine writes the state artifact
-- regenerate the state artifact with the engine and settings you will compare against
-- keep large seeds out of `state:modified` selection and manage them explicitly
-
-Revert before moving on:
-
-```bash
-git checkout -- seeds/abra_pos/raw_orders.csv
-```
-
 ## Takeaways
 
 - Static analysis covers tests, seeds and snapshots, not just models.
@@ -158,6 +101,3 @@ git checkout -- seeds/abra_pos/raw_orders.csv
 - Dynamic materialization builds fine and is still worth removing — one name
   should mean one plan.
 - Cross-engine state comparison agrees on models.
-- Seeds over the hashing limit are the real state trap, in both directions:
-  changes missed at the default, permanent false positives if the limit differs
-  between the engine that wrote the artifact and the one reading it.
