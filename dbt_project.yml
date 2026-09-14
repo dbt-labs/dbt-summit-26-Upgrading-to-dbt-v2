@@ -10,8 +10,6 @@ macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 test-paths: ["tests"]
 analysis-paths: ["analyses"]
-
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
@@ -24,16 +22,11 @@ models:
     intermediate:
       +materialized: ephemeral
     marts:
-      materialized: table
       +tags: ['core_lab']
       compliance:
         +materialized: audit_table
         +static_analysis: 'off'
-      quarantine:
-        # Switched off during past incidents and never revisited. Nothing here
-        # is in the nightly job, so the SQL has not been exercised in months.
-        +enabled: "{{ var('include_quarantined', false) }}"
-        +tags: ['quarantined']
+      +materialized: table
 
 seeds:
   merlinco_apothecaries:
@@ -46,3 +39,5 @@ seeds:
       +tags: ['pos']
     alembic_ops:
       +tags: ['ops']
+flags:
+  require_generic_test_arguments_property: true

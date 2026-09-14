@@ -1,15 +1,6 @@
-{#
-  QUARANTINED 2026-02-04.
-
-  Ops wanted brew yield per cauldron. Shelved when the cauldron dimension never
-  materialized -- cauldron_id is still just a bare string on the brew events.
-
-  Re-enable with:  --vars 'include_quarantined: true'
-#}
-
 select
     brew_id,
-    potion_sku,
+    brew_events.potion_sku as potion_sku,
     shop_id,
     cauldron_id,
     brewed_at,

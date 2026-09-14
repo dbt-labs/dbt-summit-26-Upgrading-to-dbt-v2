@@ -7,11 +7,9 @@
   asking who signed off on a rebuild.
 #}
 
-{{
-    config(
-        compliance_owner = 'guild-audit-team'
-    )
-}}
+{{ config(
+    meta={'compliance_owner': 'guild-audit-team'}
+) }}
 
 with order_items as (
 
