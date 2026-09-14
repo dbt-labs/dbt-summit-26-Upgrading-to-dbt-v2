@@ -32,7 +32,7 @@ models:
       quarantine:
         # Switched off during past incidents and never revisited. Nothing here
         # is in the nightly job, so the SQL has not been exercised in months.
-        +enabled: "{{ var('include_quarantined') }}"
+        +enabled: "{{ var('include_quarantined', false) }}"
         +tags: ['quarantined']
 
 seeds:
