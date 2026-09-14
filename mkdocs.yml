@@ -61,5 +61,4 @@ nav:
       - 3 - Baseline and strict: lab/03-baseline-and-strict.md
       - 3b - Dynamic SQL and introspection: lab/03b-dynamic-sql-and-introspection.md
       - 4 - Run, build, and state: lab/04-run-build-and-state.md
-      - 5 - Deferral and rollout: lab/05-deferral-and-rollout.md
-  - Instructor notes: instructor-notes.md
+      - 5 - Deferral and rollout: lab/05-scaling-the-rollout.md
