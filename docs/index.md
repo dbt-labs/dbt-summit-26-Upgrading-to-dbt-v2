@@ -1,6 +1,6 @@
-# ⚡ Upgrading to dbt Core v2
+# ⚡ Upgrading to dbt v2
 
-Welcome to the **Summit 2026 Upgrading to dbt v2 Training**! This training repository provides hands-on experience upgrading from **dbt Core <v2.0 to dbt v2+**. Below you'll find useful links and information to following along in your own sandbox.
+Welcome to the **Summit 2026 Upgrading to dbt v2 Training**! This training repository provides hands-on experience upgrading from **dbt <v2.0 to dbt v2+**. Below you'll find useful links and information to following along in your own sandbox.
 
 ## Workshop Account Setup
 
