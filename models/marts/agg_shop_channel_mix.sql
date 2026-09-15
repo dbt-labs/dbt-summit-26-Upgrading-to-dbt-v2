@@ -33,13 +33,15 @@ in_store as (
     select
         orders.shop_region,
         date_trunc('month', orders.ordered_at) as order_month,
-        sum(item_totals.gross_amount_gold) as gross_revenue_gold
+        sum(item_totals.gross_amount_gold) as gross_revenue_gold,
+        count(distinct orders.order_id) as order_count
 
     from orders
     left join item_totals
         on orders.order_id = item_totals.order_id
     where orders.channel = 'in_store'
     group by orders.shop_region, order_month
+
 
 ),
 
@@ -48,7 +50,7 @@ courier_owl as (
     select
         orders.shop_region,
         date_trunc('month', orders.ordered_at) as order_month,
-        sum(item_totals.gross_amount_gold as gross_revenue_gold,
+        sum(item_totals.gross_amount_gold) as gross_revenue_gold,
         count(distinct orders.order_id) as order_count
 
     from orders
