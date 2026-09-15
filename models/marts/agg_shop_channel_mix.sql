@@ -48,8 +48,8 @@ courier_owl as (
     select
         orders.shop_region,
         date_trunc('month', orders.ordered_at) as order_month,
-        sum(item_totals.gross_amount_gold as gross_revenue_gold,
-        count(distinct orders.order_id) as order_count
+        sum(item_totals.gross_amount_gold) as gross_revenue_gold
+
 
     from orders
     left join item_totals

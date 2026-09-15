@@ -1,31 +1,23 @@
-{{
-    config(
-        materialized = 'table'
-    )
-}}
+{{ config(
+    meta={'materialized': 'table'}
+) }}
 
 {#
-  Collected revenue by region, split into one column per payment method.
+  Collected revenue by region, split into one column per governed payment method.
 
-  Uses Snowflake's dynamic PIVOT so finance can add a payment method without
-  anybody editing this model -- `in (any ...)` resolves the column list from the
-  data at query time rather than from a list maintained here.
+  Keep these expressions aligned with the accepted-values test on
+  stg_abra_pos__payments.payment_method. Conditional aggregation allows dbt v2
+  to validate the model in strict mode and keeps the output schema stable.
 #}
 
-select *
-from (
+select
+    shop_region,
+    sum(case when primary_payment_method = 'coin' then collected_gold end) as coin,
+    sum(case when primary_payment_method = 'guild_credit' then collected_gold end) as guild_credit,
+    sum(case when primary_payment_method = 'crystal_transfer' then collected_gold end) as crystal_transfer,
+    sum(case when primary_payment_method = 'barter' then collected_gold end) as barter
 
-    select
-        shop_region,
-        primary_payment_method,
-        collected_gold
-
-    from {{ ref('fct_orders') }}
-    where order_status = 'completed'
-      and primary_payment_method is not null
-
-)
-pivot (
-    sum(collected_gold)
-    for primary_payment_method in (any order by primary_payment_method)
-) as pivoted
+from {{ ref('fct_orders') }}
+where order_status = 'completed'
+  and primary_payment_method is not null
+group by shop_region
