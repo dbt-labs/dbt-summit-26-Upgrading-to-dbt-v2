@@ -19,10 +19,17 @@ models:
         description: "Sum of successful payments, in gold crowns."
       - name: failed_payment_count
         description: "How many payment attempts on this order failed."
+      - name: primary_payment_method
+        description: "Payment method of the first successful payment on the order. New values here will silently drop out of agg_payment_method_mix until a column is added there."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['barter', 'coin', 'crystal_transfer', 'guild_credit']
 
     config:
       docs:
         show: true
+
   - name: fct_order_items
     description: "One row per potion per order, widened with order and potion attributes."
     columns:
