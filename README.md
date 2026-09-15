@@ -48,10 +48,14 @@ one gate:
   night. dbt Core discards both keys without a word and reports `PASS`. Autofix
   "fixes" them by moving them to `meta`, which turns the gate green and leaves
   the corruption running.
-- **Strict** — three quarantined models carrying a column typo, two ambiguous
-  column references, and a missing `group by` column. dbt Core's `compile` says
-  nothing about any of them; `dbt run` finds them only by asking Snowflake.
-  Plus a dynamic `PIVOT ... IN (ANY)` that baseline passes and strict rejects.
+- **Strict** — three quarantined models, each carrying two stacked defects
+  across six distinct analysis capabilities: a column typo, an ambiguous
+  column reference, a missing `group by` column, a transposed function
+  signature, a union column-count mismatch, and one syntax error that baseline
+  itself catches (as a warning, not a block). dbt Core's `compile` says
+  nothing about any of them; `dbt run` finds the column-level ones only by
+  asking Snowflake. Plus a dynamic `PIVOT ... IN (ANY)` that baseline passes
+  and strict rejects.
 - **Introspection** — a macro that queries the warehouse at compile time. Clean
   in all three analysis modes, and fatal under `--no-introspect` in all three,
   including `off`. An incremental model trips the same flag legitimately, so the
@@ -66,14 +70,16 @@ The headline comparison, on identical code:
 |---|---|
 | dbt Core `compile` | silent |
 | dbt Core `run` | 3 Database Errors |
-| v2 `compile --static-analysis off` | 99/99 success |
-| v2 `compile --static-analysis baseline` | 99/99 success |
+| v2 `compile --static-analysis off` | 102/102 success |
+| v2 `compile --static-analysis baseline` | 102/102 success, 1 warning |
 | v2 `compile --static-analysis strict` | 4 errors, no warehouse execution |
 
-Note the third row. **Baseline finds none of them** — it does not download
-remote schemas, so it cannot see column-level defects. Reaching baseline clean
-means you are not blocked, not that you are correct. Strict in development,
-baseline in deployment.
+Note the third row. **Baseline finds almost none of them** — it does not
+download remote schemas, so it cannot see column-level or type-level defects.
+The one thing it does catch is a broken-grammar syntax error, and even that
+only surfaces as a warning that does not block the compile. Reaching baseline
+clean (or merely warned) means you are not blocked, not that you are correct.
+Strict in development, baseline in deployment.
 
 ## Getting started
 
@@ -108,9 +114,9 @@ seeds/            12 seeds across 3 source systems (~100k rows)
 models/
   staging/        12 models, one per source table
   intermediate/    3 ephemeral models
-  marts/           facts, dimensions, aggregates
-    compliance/     custom `audit_table` materialization
-    quarantine/     switched-off models with latent defects (Module 3)
+  marts/           facts, dimensions, aggregates -- flat, config lives inline
+                     per model (custom `audit_table` materialization, and the
+                     switched-off models with latent defects from Module 3)
 macros/           conforming macros, one introspective macro, one materialization
   utils/            internal helper library (19 macro args, wrongly annotated)
 snapshots/         1 check-strategy snapshot

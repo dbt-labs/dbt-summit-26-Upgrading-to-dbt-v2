@@ -9,6 +9,8 @@
 
 {{
     config(
+        materialized = 'audit_table',
+        static_analysis = 'off',
         compliance_owner = 'guild-audit-team'
     )
 }}

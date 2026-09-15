@@ -26,14 +26,6 @@ models:
     marts:
       materialized: table
       +tags: ['core_lab']
-      compliance:
-        +materialized: audit_table
-        +static_analysis: 'off'
-      quarantine:
-        # Switched off during past incidents and never revisited. Nothing here
-        # is in the nightly job, so the SQL has not been exercised in months.
-        +enabled: "{{ var('include_quarantined', false) }}"
-        +tags: ['quarantined']
 
 seeds:
   merlinco_apothecaries:

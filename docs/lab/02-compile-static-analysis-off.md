@@ -12,9 +12,9 @@ dbt compile --static-analysis off
 ```
 
 ```
-Finished 'compile' successfully for target 'dev' [2.7s]
-Processed: 23 models | 59 tests | 1 snapshot | 12 seeds
-Summary: 95 total | 95 success
+Finished 'compile' successfully for target 'dev' [3.4s]
+Processed: 25 models | 61 tests | 1 snapshot | 12 seeds
+Summary: 99 total | 99 success
 ```
 
 ## What this actually proved

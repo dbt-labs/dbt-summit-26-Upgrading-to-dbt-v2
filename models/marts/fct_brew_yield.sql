@@ -7,6 +7,13 @@
   Re-enable with:  --vars 'include_quarantined: true'
 #}
 
+{{
+    config(
+        enabled = var('include_quarantined', false),
+        tags = ['quarantined']
+    )
+}}
+
 select
     brew_id,
     potion_sku,
@@ -16,7 +23,9 @@ select
     batch_size,
     brew_duration_minutes,
     quality_check,
-    batch_size / nullif(brew_duration_minutes, 0) as units_per_minute
+    batch_size / nullif(brew_duration_minutes, 0) as units_per_minute,
+    dateadd('minute', brew_events.brewed_at, brew_events.brew_duration_minutes)
+        as brew_finished_at
 
 from {{ ref('stg_alembic_ops__brew_events') }} as brew_events
 join {{ ref('stg_abra_pos__potions') }} as potions
