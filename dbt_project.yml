@@ -24,7 +24,7 @@ models:
     intermediate:
       +materialized: ephemeral
     marts:
-      materialized: table
+      +materialized: table
       +tags: ['core_lab']
 
 seeds:
