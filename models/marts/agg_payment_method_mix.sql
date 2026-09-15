@@ -12,20 +12,14 @@
   data at query time rather than from a list maintained here.
 #}
 
-select *
-from (
+select
+    shop_region,
+    sum(case when primary_payment_method = 'coin' then collected_gold end) as coin,
+    sum(case when primary_payment_method = 'guild_credit' then collected_gold end) as guild_credit,
+    sum(case when primary_payment_method = 'crystal_transfer' then collected_gold end) as crystal_transfer,
+    sum(case when primary_payment_method = 'barter' then collected_gold end) as barter
 
-    select
-        shop_region,
-        primary_payment_method,
-        collected_gold
-
-    from {{ ref('fct_orders') }}
-    where order_status = 'completed'
-      and primary_payment_method is not null
-
-)
-pivot (
-    sum(collected_gold)
-    for primary_payment_method in (any order by primary_payment_method)
-) as pivoted
+from {{ ref('fct_orders') }}
+where order_status = 'completed'
+  and primary_payment_method is not null
+group by shop_region
