@@ -4,7 +4,7 @@
 #}
 
 {{ config(
-    meta={'materialised': 'view'}
+    materialized = 'view'
 ) }}
 
 with potions as (
