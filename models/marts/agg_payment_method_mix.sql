@@ -4,14 +4,6 @@
     )
 }}
 
-{#
-  Collected revenue by region, split into one column per payment method.
-
-  Uses Snowflake's dynamic PIVOT so finance can add a payment method without
-  anybody editing this model -- `in (any ...)` resolves the column list from the
-  data at query time rather than from a list maintained here.
-#}
-
 select *
 from (
 
@@ -27,5 +19,5 @@ from (
 )
 pivot (
     sum(collected_gold)
-    for primary_payment_method in (any order by primary_payment_method)
+    for primary_payment_method in ('coin', 'guild_credit', 'crystal_transfer')
 ) as pivoted
