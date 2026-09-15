@@ -12,7 +12,9 @@
 {{
     config(
         enabled = var('include_quarantined', false),
-        tags = ['quarantined']
+        tags = ['quarantined'],
+        static_analysis = 'baseline'
+
     )
 }}
 
