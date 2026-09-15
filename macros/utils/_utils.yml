@@ -5,71 +5,71 @@ macros:
     description: "Division that yields null rather than erroring when the denominator is zero."
     arguments:
       - name: numerator
-        type: varchar
+        type: string
         description: "Column or expression for the numerator."
       - name: denominator
-        type: varchar
+        type: string
         description: "Column or expression for the denominator."
       - name: default_value
-        type: varchar
+        type: string
         description: "SQL literal to fall back to. Defaults to null."
 
   - name: pct_change
     description: "Period-over-period change as a fraction."
     arguments:
       - name: current_value
-        type: varchar
+        type: string
         description: "Column or expression for the current period."
       - name: previous_value
-        type: varchar
+        type: string
         description: "Column or expression for the prior period."
 
   - name: bucket_amount
     description: "Buckets a gold-crown amount into the loyalty program's bands."
     arguments:
       - name: column_name
-        type: varchar
+        type: string
         description: "Column holding a gold-crown amount."
       - name: low_threshold
-        type: numeric
+        type: float
         description: "Lower bound of the medium band."
       - name: high_threshold
-        type: numeric
+        type: float
         description: "Lower bound of the high band."
 
   - name: grain_label
     description: "Human-readable label for a date_trunc granularity."
     arguments:
       - name: granularity
-        type: varchar
+        type: string
         description: "One of day, week, month, quarter, year."
 
   - name: days_between
     description: "Whole days between two dates, null-safe."
     arguments:
       - name: start_date
-        type: date
+        type: string
         description: "The earlier date."
       - name: end_date
-        type: date
+        type: string
         description: "The later date."
 
   - name: coalesce_region
     description: "Prefers the canonical shop region, falling back to the customer's coding."
     arguments:
       - name: shop_region
-        type: varchar
+        type: string
         description: "Canonical region column from the shop dimension."
       - name: customer_region
-        type: varchar
+        type: string
         description: "Region column from the CRM extract."
       - name: fallback_label
-        type: varchar
+        type: string
         description: "SQL literal used when both are null."
 
   - name: is_weekend
     description: "True when the timestamp falls on a Saturday or Sunday."
     arguments:
       - name: timestamp_column
-        type: timestamp
+        type: string
         description: "Column holding a timestamp."
