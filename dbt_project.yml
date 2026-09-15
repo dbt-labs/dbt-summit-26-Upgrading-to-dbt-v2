@@ -16,7 +16,6 @@ clean-targets:
 
 models:
   merlinco_apothecaries:
-    +materialized: view
     staging:
       +materialized: view
     intermediate:
