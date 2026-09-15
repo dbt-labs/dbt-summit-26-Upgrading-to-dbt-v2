@@ -3,11 +3,7 @@
   point paying for storage and a rebuild on something this size.
 #}
 
-{{
-    config(
-        materialised = 'view'
-    )
-}}
+{{ config(materialized='view') }}
 
 with potions as (
 
