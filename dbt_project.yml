@@ -10,8 +10,6 @@ macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 test-paths: ["tests"]
 analysis-paths: ["analyses"]
-
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
@@ -24,8 +22,8 @@ models:
     intermediate:
       +materialized: ephemeral
     marts:
-      materialized: table
       +tags: ['core_lab']
+      +materialized: table
 
 seeds:
   merlinco_apothecaries:
@@ -38,3 +36,5 @@ seeds:
       +tags: ['pos']
     alembic_ops:
       +tags: ['ops']
+flags:
+  require_generic_test_arguments_property: true
