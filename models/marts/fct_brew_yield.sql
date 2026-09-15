@@ -15,16 +15,16 @@
 }}
 
 select
-    brew_id,
-    potion_sku,
-    shop_id,
-    cauldron_id,
-    brewed_at,
-    batch_size,
-    brew_duration_minutes,
-    quality_check,
-    batch_size / nullif(brew_duration_minutes, 0) as units_per_minute,
-    dateadd('minute', brew_events.brewed_at, brew_events.brew_duration_minutes)
+    brew_events.brew_id,
+    brew_events.potion_sku,
+    brew_events.shop_id,
+    brew_events.cauldron_id,
+    brew_events.brewed_at,
+    brew_events.batch_size,
+    brew_events.brew_duration_minutes,
+    brew_events.quality_check,
+    brew_events.batch_size / nullif(brew_events.brew_duration_minutes, 0) as units_per_minute,
+    dateadd('minute', brew_events.brew_duration_minutes, brew_events.brewed_at)
         as brew_finished_at
 
 from {{ ref('stg_alembic_ops__brew_events') }} as brew_events
