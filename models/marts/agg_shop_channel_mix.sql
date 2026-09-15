@@ -12,8 +12,7 @@
 {{
     config(
         enabled = var('include_quarantined', false),
-        tags = ['quarantined'],
-        static_analysis = 'baseline'
+        tags = ['quarantined']
 
     )
 }}
@@ -35,7 +34,8 @@ in_store as (
     select
         orders.shop_region,
         date_trunc('month', orders.ordered_at) as order_month,
-        sum(item_totals.gross_amount_gold) as gross_revenue_gold
+        sum(item_totals.gross_amount_gold) as gross_revenue_gold,
+        count(distinct orders.order_id) as order_count
 
     from orders
     left join item_totals
@@ -50,7 +50,7 @@ courier_owl as (
     select
         orders.shop_region,
         date_trunc('month', orders.ordered_at) as order_month,
-        sum(item_totals.gross_amount_gold as gross_revenue_gold,
+        sum(item_totals.gross_amount_gold) as gross_revenue_gold,
         count(distinct orders.order_id) as order_count
 
     from orders
