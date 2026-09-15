@@ -24,3 +24,5 @@ package-lock.yml
 
 # Internal research notes -- references internal tickets, keep out of the trainee repo
 research.md
+
+analyses/answer_key/agg_payment_method_mix__fix.sql
