@@ -52,7 +52,8 @@ models:
         description: "Lifetime-spend banding used by the loyalty program."
         tests:
           - accepted_values:
-              values: ['archmage', 'adept', 'apprentice', 'prospect']
+              arguments:
+                values: ['archmage', 'adept', 'apprentice', 'prospect']
       - name: guild_tier
         description: "Current guild tier, null when the customer holds no membership."
 
