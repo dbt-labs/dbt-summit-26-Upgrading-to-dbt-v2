@@ -1,8 +1,6 @@
-{{
-    config(
-        materialized = 'table'
-    )
-}}
+{{ config(
+    meta={'materialized': 'table'}
+) }}
 
 {#
   Collected revenue by region, split into one column per governed payment method.
