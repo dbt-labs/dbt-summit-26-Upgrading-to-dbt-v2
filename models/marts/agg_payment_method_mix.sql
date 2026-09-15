@@ -27,5 +27,5 @@ from (
 )
 pivot (
     sum(collected_gold)
-    for primary_payment_method in (any order by primary_payment_method)
+    for primary_payment_method in ('coin', 'guild_credit')
 ) as pivoted
