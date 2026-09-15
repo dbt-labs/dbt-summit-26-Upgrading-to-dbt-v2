@@ -72,7 +72,7 @@ models:
         description: "How the customer paid."
         tests:
           - accepted_values:
-              values: ['coin', 'guild_credit', 'crystal_transfer', 'barter']
+              arguments: ['coin', 'guild_credit', 'crystal_transfer', 'barter']
       - name: payment_status
         description: "Outcome of the payment attempt."
         tests:

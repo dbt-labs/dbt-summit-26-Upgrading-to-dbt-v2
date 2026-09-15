@@ -3,8 +3,9 @@ version: 2
 models:
   - name: fct_orders
     description: "One row per order, with basket metrics and payment outcomes attached."
-    docs:
-      show: true
+    config: 
+      docs:
+        show: true
     columns:
       - name: order_id
         description: "Primary key."
