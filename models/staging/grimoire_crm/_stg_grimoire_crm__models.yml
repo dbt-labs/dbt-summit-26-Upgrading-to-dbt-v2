@@ -15,12 +15,13 @@ models:
         description: "Self-reported region, conformed to the canonical shop region spelling."
         tests:
           - accepted_values:
-              values:
-                - 'Northern Reaches'
-                - 'Crystal Vale'
-                - 'The Marshlands'
-                - 'Ember Coast'
-                - 'Silverwood'
+              arguments:
+                values:
+                  - 'Northern Reaches'
+                  - 'Crystal Vale'
+                  - 'The Marshlands'
+                  - 'Ember Coast'
+                  - 'Silverwood'
       - name: favored_discipline
         description: "Magical discipline the customer favors, lowercased."
 
@@ -46,8 +47,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('stg_grimoire_crm__customers')
-              field: customer_id
+              arguments:
+                to: ref('stg_grimoire_crm__customers')
+                field: customer_id
       - name: guild_id
         description: "Foreign key to stg_grimoire_crm__guilds."
         tests:
@@ -56,6 +58,7 @@ models:
         description: "Membership tier, lowercased."
         tests:
           - accepted_values:
-              values: ['apprentice', 'adept', 'archmage']
+              arguments:
+                values: ['apprentice', 'adept', 'archmage']
       - name: is_current_membership
         description: "True when the source row has no valid_to, i.e. it is the live tier."
