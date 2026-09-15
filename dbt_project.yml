@@ -10,8 +10,6 @@ macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 test-paths: ["tests"]
 analysis-paths: ["analyses"]
-
-target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
@@ -38,3 +36,5 @@ seeds:
       +tags: ['pos']
     alembic_ops:
       +tags: ['ops']
+flags:
+  require_generic_test_arguments_property: true
