@@ -44,9 +44,10 @@ models:
     description: "Recipe bridge. Natural key is (potion_sku, ingredient_id)."
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - potion_sku
-            - ingredient_id
+          arguments:
+            combination_of_columns:
+              - potion_sku
+              - ingredient_id
     columns:
       - name: potion_sku
         description: "Half of the composite key. Foreign key to stg_abra_pos__potions."
@@ -73,6 +74,7 @@ models:
         description: "Batch QC outcome, lowercased."
         tests:
           - accepted_values:
-              values: ['pass', 'fail']
+              arguments:
+                values: ['pass', 'fail']
       - name: brew_duration_minutes
         description: "Minutes the batch took. Roughly 1% are null at source."
