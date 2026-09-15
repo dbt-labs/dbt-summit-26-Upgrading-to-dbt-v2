@@ -5,11 +5,10 @@
 }}
 
 {#
-  Collected revenue by region, split into one column per payment method.
+  Collected revenue by region, split into one column per supported payment method.
 
-  Uses Snowflake's dynamic PIVOT so finance can add a payment method without
-  anybody editing this model -- `in (any ...)` resolves the column list from the
-  data at query time rather than from a list maintained here.
+  The explicit payment-method list keeps the model compatible with dbt static
+  analysis. Update this list when a new accepted payment method is introduced.
 #}
 
 select *
@@ -27,5 +26,10 @@ from (
 )
 pivot (
     sum(collected_gold)
-    for primary_payment_method in (any order by primary_payment_method)
+    for primary_payment_method in (
+        'barter' as barter,
+        'coin' as coin,
+        'crystal_transfer' as crystal_transfer,
+        'guild_credit' as guild_credit
+    )
 ) as pivoted
