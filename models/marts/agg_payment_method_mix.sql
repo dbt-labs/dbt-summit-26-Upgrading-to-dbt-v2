@@ -18,14 +18,11 @@ from (
     select
         shop_region,
         primary_payment_method,
-        collected_gold
+        collected_gold,
+        sum(case when primary_payment_method = 'coin' then collect_gold end) as coin
 
     from {{ ref('fct_orders') }}
     where order_status = 'completed'
       and primary_payment_method is not null
 
 )
-pivot (
-    sum(collected_gold)
-    for primary_payment_method in (any order by primary_payment_method)
-) as pivoted
