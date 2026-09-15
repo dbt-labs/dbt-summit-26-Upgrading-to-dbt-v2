@@ -11,9 +11,9 @@ renamed as (
         potion_sku,
         shop_id,
         cauldron_id,
-        {{ parse_source_timestamp('brewed_at') }} as brewed_at,
+        {{ parse_source_timestamp('brewed_at') }}::date as brewed_at,
         batch_size,
-        brew_duration_minutes,
+        brew_duration_minutes::integer as brew_duration_minutes,
         lower(trim(quality_check)) as quality_check,
         brewer_name
 
