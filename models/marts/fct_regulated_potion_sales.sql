@@ -8,8 +8,7 @@
 #}
 
 {{ config(
-    materialized='audit_table', 
-    static_analysis='off', 
+    materialized='audit_table',
     meta={'compliance_owner': 'guild-audit-team'}
 ) }}
 
