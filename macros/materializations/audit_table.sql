@@ -24,7 +24,7 @@
         identifier = 'merlinco_build_ledger'
     ) -%}
 
-    {%- set compliance_owner = config.get('compliance_owner', 'unassigned') -%}
+    {%- set compliance_owner = config.meta_get('compliance_owner', 'unassigned') -%}
 
     {%- call statement('create_ledger') -%}
         create table if not exists {{ ledger_relation }} (
