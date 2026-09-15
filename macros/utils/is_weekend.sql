@@ -3,5 +3,5 @@
   different hours at weekends, so ops splits most metrics on this.
 #}
 {% macro is_weekend(timestamp_column) %}
-    dayofweek({{ timestamp_column }}) in (0, 6)
+    dayofweekiso({{ timestamp_column }}) in (6, 7)
 {% endmacro %}
