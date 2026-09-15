@@ -7,13 +7,11 @@
   asking who signed off on a rebuild.
 #}
 
-{{
-    config(
-        materialized = 'audit_table',
-        static_analysis = 'off',
-        compliance_owner = 'guild-audit-team'
-    )
-}}
+{{ config(
+    materialized='audit_table', 
+    static_analysis='off', 
+    meta={'compliance_owner': 'guild-audit-team'}
+) }}
 
 with order_items as (
 
